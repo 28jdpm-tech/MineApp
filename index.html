@@ -1,0 +1,1073 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script>window.onerror = function(msg, url, lineNo, columnNo, error) { alert('Error: ' + msg + '\nLínea: ' + lineNo); return false; };</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GALERÍA AYC - Sistema de GestiÃ³n</title>
+    <meta name="description" content="Sistema de gestiÃ³n para GALERÍA AYC">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <meta name="theme-color" content="#0a1628">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-brand">
+                <span class="brand-name">GALERÍA AYC</span>
+                <span class="brand-subtitle">ORDERING</span>
+            </div>
+            <button class="menu-btn" id="menuBtn">
+                <i data-lucide="menu"></i>
+            </button>
+        </header>
+
+        <!-- Mobile Navigation Drawer -->
+        <div class="nav-drawer" id="navDrawer">
+            <div class="drawer-overlay" id="drawerOverlay"></div>
+            <div class="drawer-content">
+                <div class="drawer-header">
+                    <span class="brand-name">GALERÍA AYC</span>
+                    <button class="close-drawer" id="closeDrawer">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+                <nav class="drawer-nav">
+                    <a href="#" class="drawer-item active" data-page="new-order">
+                        <i data-lucide="plus-circle"></i>
+                        <span>Nuevo Pedido</span>
+                    </a>
+                    <a href="#" class="drawer-item" data-page="checkout">
+                        <i data-lucide="banknote"></i>
+                        <span>Cobro</span>
+                    </a>
+                    <a href="#" class="drawer-item" data-page="history">
+                        <i data-lucide="history"></i>
+                        <span>Historial</span>
+                    </a>
+                    <a href="#" class="drawer-item" data-page="reports">
+                        <i data-lucide="bar-chart-3"></i>
+                        <span>Reportes</span>
+                    </a>
+                    <a href="#" class="drawer-item" data-page="expenses">
+                        <i data-lucide="wallet"></i>
+                        <span>Gastos</span>
+                    </a>
+
+                    <a href="#" class="drawer-item" data-page="admin">
+                        <i data-lucide="settings"></i>
+                        <span>Admin</span>
+                    </a>
+                </nav>
+                <div class="drawer-footer">
+                    <div class="user-badge">
+                        <i data-lucide="user"></i>
+                        <span>Cajero 1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- New Order Page (Multi-Sector POS) -->
+            <div class="page active" id="page-new-order">
+                                                <div class="pos-workspace pos-workspace-split" id="posWorkspace">
+                                                                                                    <!-- Top Header: Floating Curved Boxes -->
+                    <div style="padding: 15px 20px 0 20px; display: flex; flex-direction: column; gap: 12px; background: transparent;">
+                        
+                        <!-- Caja 1: Mesa / Nombre -->
+                        <input type="text" id="posLocationInput" placeholder="Mesa o Nombre del Cliente..." style="padding: 14px 20px; border: 1px solid #cbd5e1; border-radius: 25px; font-weight: bold; width: 100%; box-sizing: border-box; color: #1e293b; background: white; outline: none; font-size: 1.05rem; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+                        
+                        <!-- Caja 2: Pestañas de Personas -->
+                        <div class="pos-people-tabs-container" style="display: flex; align-items: center; gap: 12px; width: 100%; box-sizing: border-box; background: white; border: 1px solid #cbd5e1; border-radius: 25px; padding: 6px 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+                            <button type="button" class="btn-add-person" id="btnAddClient" style="background: #f1f5f9; border: 1px solid #e2e8f0; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;">
+                                <i data-lucide="plus" style="color: #475569; width: 18px; height: 18px;"></i>
+                            </button>
+                            <div id="posClientsTabs" class="pos-clients-scroll" style="display: flex; gap: 8px; overflow-x: auto; flex: 1; align-items: center; min-height: 36px;">
+                                <!-- P1, P2 pills go here -->
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <!-- Body: Dynamic Categories -->
+                    <div class="pos-dynamic-body" id="dynamicCategoriesContainer" style="padding: 15px; display: flex; flex-direction: row; gap: 20px; overflow-x: auto; overflow-y: hidden; flex: 1; background: var(--bg-primary);">
+                        <!-- Dynamic Categories Rendered Here -->
+                    </div>
+
+                </div>
+            </div>
+            <!-- Kitchen (KDS) Page -->
+            <div class="page" id="page-kitchen">
+                <div class="page-title-bar">
+                    <h2>Cocina (KDS)</h2>
+                </div>
+                <div class="kitchen-board">
+                    <div class="kitchen-column pending">
+                        <div class="column-header">
+                            <i data-lucide="clock"></i>
+                            <h3>Pendientes</h3>
+                            <span class="count" id="countPending">0</span>
+                        </div>
+                        <div class="column-cards" id="listPending"></div>
+                    </div>
+                    <div class="kitchen-column preparing">
+                        <div class="column-header">
+                            <i data-lucide="flame"></i>
+                            <h3>Preparando</h3>
+                            <span class="count" id="countPreparing">0</span>
+                        </div>
+                        <div class="column-cards" id="listPreparing"></div>
+                    </div>
+                    <div class="kitchen-column ready">
+                        <div class="column-header">
+                            <i data-lucide="check-circle"></i>
+                            <h3>Listos</h3>
+                            <span class="count" id="countReady">0</span>
+                        </div>
+                        <div class="column-cards" id="listReady"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checkout/Payment Page -->
+            <div class="page" id="page-checkout">
+                <div class="page-title-bar">
+                    <h2>Cobro de Pedidos</h2>
+                </div>
+
+                <!-- Checkout Tabs -->
+                <div class="checkout-tabs">
+                    <button class="checkout-tab active" data-tab="to-print">
+                        <i data-lucide="printer"></i>
+                        Imprimir
+                        <span class="tab-count" id="toPrintCount">0</span>
+                    </button>
+                    <button class="checkout-tab" data-tab="pending">
+                        <i data-lucide="credit-card"></i>
+                        Por Cobrar
+                        <span class="tab-count" id="pendingPaymentCount">0</span>
+                    </button>
+                    <button class="checkout-tab" data-tab="paid">
+                        <i data-lucide="check-circle"></i>
+                        Pagadas
+                        <span class="tab-count" id="paidOrdersCount">0</span>
+                    </button>
+                </div>
+
+                <!-- To Print Orders -->
+                <div class="checkout-orders-list" id="toPrintList">
+                    <!-- Orders waiting to be printed will be rendered here -->
+                </div>
+
+                <!-- Pending Payment Orders -->
+                <div class="checkout-orders-list hidden" id="pendingPaymentList">
+                    <!-- Orders pending payment will be rendered here -->
+                </div>
+
+                <!-- Paid Orders -->
+                <div class="checkout-orders-list hidden" id="paidOrdersList">
+                    <!-- Paid orders will be rendered here -->
+                </div>
+
+                <!-- Payment Modal -->
+                <div class="payment-modal hidden" id="paymentModal">
+                    <div class="modal-overlay" id="paymentModalOverlay"></div>
+                    <div class="payment-modal-content">
+                        <div class="payment-header">
+                            <h3>Cobrar Pedido</h3>
+                            <span class="order-num" id="paymentOrderNum"></span>
+                        </div>
+                        <div class="payment-ticket">
+                            <pre class="ticket-content" id="paymentTicketContent"></pre>
+                        </div>
+
+
+
+
+                                                <div class="payment-total-row">
+                            <span>TOTAL A COBRAR:</span>
+                            <span class="payment-total" id="paymentTotal"></span>
+                        </div>
+                        <div class="payment-methods-container" style="margin: var(--space-md) 0;">
+                            <label
+                                style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem;">M&eacute;todo de Pago:</label>
+                            <div class="method-options" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <label class="method-label" style="flex: 1; min-width: 60px; cursor: pointer;">
+                                    <input type="radio" name="paymentMethod" value="efectivo" class="payment-radio"
+                                        style="display: none;">
+                                    <div class="method-card"
+                                        style="padding: 10px; border: 1px solid #e5e7eb; border-color: var(--border-color, #e5e7eb); border-radius: var(--radius-sm); background: white; color: #000000; text-align: center; font-weight: 500; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                        <i data-lucide="banknote"
+                                            style="margin-bottom: 4px; width: 20px; height: 20px;"></i>
+                                        EFECTIVO
+                                    </div>
+                                </label>
+                                <label class="method-label" style="flex: 1; min-width: 60px; cursor: pointer;">
+                                    <input type="radio" name="paymentMethod" value="nequi" class="payment-radio"
+                                        style="display: none;">
+                                    <div class="method-card"
+                                        style="padding: 10px; border: 1px solid #e5e7eb; border-color: var(--border-color, #e5e7eb); border-radius: var(--radius-sm); background: white; color: #000000; text-align: center; font-weight: 500; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                        <i data-lucide="smartphone"
+                                            style="margin-bottom: 4px; width: 20px; height: 20px;"></i>
+                                        NEQUI
+                                    </div>
+                                </label>
+                                <label class="method-label" style="flex: 1; min-width: 60px; cursor: pointer;">
+                                    <input type="radio" name="paymentMethod" value="daviplata" class="payment-radio"
+                                        style="display: none;">
+                                    <div class="method-card"
+                                        style="padding: 10px; border: 1px solid #e5e7eb; border-color: var(--border-color, #e5e7eb); border-radius: var(--radius-sm); background: white; color: #000000; text-align: center; font-weight: 500; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                        <i data-lucide="smartphone-charging"
+                                            style="margin-bottom: 4px; width: 20px; height: 20px;"></i>
+                                        DAVIPLATA
+                                    </div>
+                                </label>
+                                <label class="method-label" style="flex: 1; min-width: 60px; cursor: pointer;">
+                                    <input type="radio" name="paymentMethod" value="combinado" class="payment-radio"
+                                        style="display: none;">
+                                    <div class="method-card"
+                                        style="padding: 10px; border: 1px solid #e5e7eb; border-color: var(--border-color, #e5e7eb); border-radius: var(--radius-sm); background: white; color: #000000; text-align: center; font-weight: 500; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                        <i data-lucide="split"
+                                            style="margin-bottom: 4px; width: 20px; height: 20px;"></i>
+                                        COMBINADO
+                                    </div>
+                                </label>
+                            </div>
+                            <!-- Combined Payment Panel -->
+                            <div id="combinedPaymentPanel"
+                                style="display: none; margin-top: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e5e7eb;">
+                                <div style="font-size: 0.85rem; font-weight: 600; margin-bottom: 10px; color: #374151;">
+                                    Dividir pago:</div>
+                                <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                                    <div style="flex: 1;">
+                                        <label
+                                            style="display: block; font-size: 0.75rem; color: #6b7280; margin-bottom: 4px;">Efectivo</label>
+                                        <input type="number" id="combinedEfectivo" placeholder="0"
+                                            style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.9rem; text-align: center;">
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <label
+                                            style="display: block; font-size: 0.75rem; color: #6b7280; margin-bottom: 4px;">Nequi</label>
+                                        <input type="number" id="combinedNequi" placeholder="0"
+                                            style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.9rem; text-align: center;">
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <label
+                                            style="display: block; font-size: 0.75rem; color: #6b7280; margin-bottom: 4px;">Daviplata</label>
+                                        <input type="number" id="combinedDaviplata" placeholder="0"
+                                            style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.9rem; text-align: center;">
+                                    </div>
+                                </div>
+                                <div id="combinedTotal"
+                                    style="font-size: 0.8rem; color: #059669; font-weight: 600; text-align: right;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="payment-actions">
+                            <button class="btn-pay" id="confirmPayment">
+                                <i data-lucide="banknote"></i>
+                                Marcar como Pagado
+                            </button>
+                            <button class="btn-print-checkout" id="printPaymentTicket">
+                                <i data-lucide="printer"></i>
+                                Imprimir
+                            </button>
+                            <button class="btn-invoice" id="invoicePaymentTicket">
+                                <i data-lucide="receipt"></i>
+                                Factura
+                            </button>
+                            <button class="btn-cancel" id="cancelPayment">Volver</button>
+                            <button class="btn-delete-order" id="deleteOrderBtn" style="display: flex !important;">
+                                <i data-lucide="trash-2"></i>
+                                Eliminar Pedido
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Orders Page -->
+            <div class="page" id="page-orders">
+                <div class="page-title-bar">
+                    <h2>Comandas Activas</h2>
+                </div>
+                <div class="orders-list" id="ordersList"></div>
+            </div>
+
+            <!-- History Page -->
+            <div class="page" id="page-history">
+                <div class="page-title-bar">
+                    <h2>Historial de Comandas</h2>
+                </div>
+
+                <!-- History Tabs -->
+                <div class="history-tabs">
+                    <button class="history-tab active" data-tab="today">Comandas del DÃ­a</button>
+                    <button class="history-tab" data-tab="date">Por Fecha</button>
+                </div>
+
+                <!-- Date Picker (hidden by default) -->
+                <div class="date-picker-container hidden" id="datePickerContainer">
+                    <input type="date" id="historyDatePicker" class="date-picker-input">
+                    <button class="search-date-btn" id="searchDateBtn">
+                        <i data-lucide="search"></i>
+                        Buscar
+                    </button>
+                </div>
+
+                <!-- History Summary -->
+                <div class="history-summary" id="historySummary">
+                    <div class="summary-card filter-card active" data-filter="all">
+                        <span class="summary-label">VENTAS TOTALES</span>
+                        <span class="summary-value" id="historyTotalSales">$0</span>
+                    </div>
+                    <div class="summary-card filter-card" data-filter="efectivo">
+                        <span class="summary-label">EFECTIVO</span>
+                        <span class="summary-value" id="historyTotalEfectivo">$0</span>
+                    </div>
+                    <div class="summary-card filter-card" data-filter="nequi">
+                        <span class="summary-label">NEQUI</span>
+                        <span class="summary-value" id="historyTotalNequi">$0</span>
+                    </div>
+                    <div class="summary-card filter-card" data-filter="daviplata">
+                        <span class="summary-label">DAVIPLATA</span>
+                        <span class="summary-value" id="historyTotalDaviplata">$0</span>
+                    </div>
+                    <!-- Categories (can also be filters) -->
+                    <div class="summary-card filter-card" data-filter="comida">
+                        <span class="summary-label">COMIDA</span>
+                        <span class="summary-value" id="historyTotalFood">$0</span>
+                    </div>
+                    <div class="summary-card filter-card" data-filter="bebidas">
+                        <span class="summary-label">BEBIDAS</span>
+                        <span class="summary-value" id="historyTotalBebidas">$0</span>
+                    </div>
+                    <div class="summary-card filter-card" data-filter="desechables">
+                        <span class="summary-label">DESECHABLES</span>
+                        <span class="summary-value" id="historyTotalDesechables">$0</span>
+                    </div>
+                </div>
+
+                <!-- History Orders List -->
+                <div class="history-orders-list" id="historyOrdersList">
+                    <!-- Orders will be rendered here -->
+                </div>
+
+                <!-- Order Detail Modal -->
+                <div class="modal history-order-modal hidden" id="historyOrderModal">
+                    <div class="modal-overlay" id="historyModalOverlay"></div>
+                    <div class="history-order-detail" id="historyOrderDetail">
+                        <div class="detail-header">
+                            <div class="header-left">
+                                <button class="back-btn" id="backToHistoryBtn">
+                                    <i data-lucide="arrow-left"></i>
+                                    Cerrar
+                                </button>
+                            </div>
+                            <div class="header-actions">
+                                <button class="reprint-btn" id="reprintOrderBtn">
+                                    <i data-lucide="printer"></i>
+                                    Imprimir
+                                </button>
+                                <button class="btn-invoice" id="invoiceOrderBtn" style="height: 36px; padding: 0 12px; font-size: 0.8rem; width: auto;">
+                                    <i data-lucide="receipt"></i>
+                                    Factura
+                                </button>
+                                <button class="btn-delete-order" id="deleteOrderBtnHistory">
+                                    <i data-lucide="trash-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="detail-ticket">
+                            <pre class="ticket-content" id="historyTicketContent"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Page -->
+            <div class="page" id="page-reports">
+                <div class="page-title-bar">
+                    <h2>Reportes de Ventas</h2>
+                </div>
+
+                <!-- Reports Filter -->
+                <div class="reports-filter">
+                    <div class="filter-group">
+                        <label>Reporte por:</label>
+                        <select id="reportPeriodSelect" class="date-picker-input">
+                            <option value="today">Hoy</option>
+                            <option value="date">DÃ­a EspecÃ­fico</option>
+                            <option value="month">Mes Actual</option>
+                            <option value="specific-month">Mes EspecÃ­fico</option>
+                            <option value="total">HistÃ³rico Total</option>
+                        </select>
+                    </div>
+                    <div class="filter-group hidden" id="reportDatePickerGroup">
+                        <input type="date" id="reportDatePicker" class="date-picker-input">
+                    </div>
+                    <div class="filter-group hidden" id="reportMonthPickerGroup">
+                        <input type="month" id="reportMonthPicker" class="date-picker-input">
+                    </div>
+                    <button class="search-date-btn" id="searchReportBtn">
+                        <i data-lucide="search"></i>
+                        Consultar
+                    </button>
+                </div>
+
+                <div class="reports-grid">
+                    <div class="report-stat-card">
+                        <div class="stat-icon sales"><i data-lucide="dollar-sign"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Ventas Periodo</span>
+                            <span class="stat-value" id="reportDailySales">$0</span>
+                        </div>
+                    </div>
+                    <div class="report-stat-card">
+                        <div class="stat-icon food"><i data-lucide="utensils"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Comida</span>
+                            <span class="stat-value" id="reportFoodSales">$0</span>
+                        </div>
+                    </div>
+                    <div class="report-stat-card">
+                        <div class="stat-icon drinks"><i data-lucide="coffee"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Bebidas</span>
+                            <span class="stat-value" id="reportBebidasSales">$0</span>
+                        </div>
+                    </div>
+                    <div class="report-stat-card">
+                        <div class="stat-icon disposables"
+                            style="background: var(--chip-purple-bg); color: var(--chip-purple);"><i
+                                data-lucide="package"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Desechables</span>
+                            <span class="stat-value" id="reportDesechablesSales">$0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Methods Section in Reports -->
+                <div class="reports-grid" style="margin-top: var(--space-md);">
+                    <div class="report-stat-card report-clickable" data-report-filter="efectivo">
+                        <div class="stat-icon"
+                            style="background: rgba(110, 231, 183, 0.1); color: var(--accent-primary);"><i
+                                data-lucide="banknote"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Efectivo</span>
+                            <span class="stat-value" id="reportEfectivoSales">$0</span>
+                        </div>
+                    </div>
+                    <div class="report-stat-card report-clickable" data-report-filter="nequi">
+                        <div class="stat-icon" style="background: rgba(96, 165, 250, 0.1); color: #60a5fa;"><i
+                                data-lucide="smartphone"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Nequi</span>
+                            <span class="stat-value" id="reportNequiSales">$0</span>
+                        </div>
+                    </div>
+                    <div class="report-stat-card report-clickable" data-report-filter="daviplata">
+                        <div class="stat-icon" style="background: rgba(251, 146, 60, 0.1); color: #fb923c;"><i
+                                data-lucide="credit-card"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Daviplata</span>
+                            <span class="stat-value" id="reportDaviplataSales">$0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Report Detail Modal -->
+                <div class="modal hidden" id="reportDetailModal" style="z-index: 10001;">
+                    <div class="modal-overlay" id="closeReportDetailModalOverlay"></div>
+                    <div class="modal-content" style="max-width: 450px;">
+                        <div class="modal-header">
+                            <h3 id="reportDetailTitle">Detalle de Pagos</h3>
+                            <button class="modal-close" id="closeReportDetailModal">
+                                <i data-lucide="x"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="padding: 0;">
+                            <div class="report-detail-list" id="reportDetailList">
+                                <!-- Table populated via JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sales Breakdown Table (Requested by User) -->
+                <div class="report-details-full"
+                    style="padding: 0 var(--space-md) var(--space-md); margin-top: var(--space-lg);">
+                    <div class="report-section"
+                        style="background: var(--bg-secondary); border-radius: var(--radius-lg); padding: var(--space-md); border: 1px solid var(--border-subtle);">
+                        <div class="section-header"
+                            style="margin-bottom: var(--space-md); border-bottom: 2px solid var(--accent-primary);">
+                            <i data-lucide="list" style="color: var(--accent-primary);"></i>
+                            <h3 style="flex: 1;">Reporte de Ventas</h3>
+                            <button id="downloadReportBtn"
+                                style="background: none; border: none; color: var(--accent-primary); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 4px; margin-right: 8px;"
+                                title="Descargar Excel">
+                                <i data-lucide="file-spreadsheet"></i>
+                            </button>
+                            <span id="reportSalesTotal"
+                                style="font-weight: 800; color: var(--accent-primary);">$0</span>
+                        </div>
+                        <div id="salesBreakdownTable"></div>
+                    </div>
+                </div>
+
+                <!-- Payment Details Tables (Requested by User) -->
+                <div class="report-details-full"
+                    style="padding: 0 var(--space-md) var(--space-md); margin-top: var(--space-lg);">
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-md);">
+
+                        <!-- Efectivo Table -->
+                        <div class="report-section"
+                            style="background: var(--bg-secondary); border-radius: var(--radius-lg); padding: var(--space-md); border: 1px solid var(--border-subtle);">
+                            <div class="section-header"
+                                style="margin-bottom: var(--space-md); border-bottom: 2px solid #16a34a;">
+                                <i data-lucide="banknote" style="color: #16a34a;"></i>
+                                <h3 style="flex: 1;">Detalle Efectivo</h3>
+                                <span id="reportEfectivoSalesTotal" style="font-weight: 800; color: #16a34a;">$0</span>
+                            </div>
+                            <div id="paymentTableEfectivo"></div>
+                        </div>
+
+                        <!-- Nequi Table -->
+                        <div class="report-section"
+                            style="background: var(--bg-secondary); border-radius: var(--radius-lg); padding: var(--space-md); border: 1px solid var(--border-subtle);">
+                            <div class="section-header"
+                                style="margin-bottom: var(--space-md); border-bottom: 2px solid #60a5fa;">
+                                <i data-lucide="smartphone" style="color: #60a5fa;"></i>
+                                <h3 style="flex: 1;">Detalle Nequi</h3>
+                                <span id="reportNequiSalesTotal" style="font-weight: 800; color: #60a5fa;">$0</span>
+                            </div>
+                            <div id="paymentTableNequi"></div>
+                        </div>
+
+                        <!-- Daviplata Table -->
+                        <div class="report-section"
+                            style="background: var(--bg-secondary); border-radius: var(--radius-lg); padding: var(--space-md); border: 1px solid var(--border-subtle);">
+                            <div class="section-header"
+                                style="margin-bottom: var(--space-md); border-bottom: 2px solid #fb923c;">
+                                <i data-lucide="credit-card" style="color: #fb923c;"></i>
+                                <h3 style="flex: 1;">Detalle Daviplata</h3>
+                                <span id="reportDaviplataSalesTotal" style="font-weight: 800; color: #fb923c;">$0</span>
+                            </div>
+                            <div id="paymentTableDaviplata"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expenses (Gastos) Page -->
+            <div class="page" id="page-expenses">
+                <div class="page-title-bar">
+                    <h2>Gastos / Costos</h2>
+                </div>
+
+                <!-- Expense Form -->
+                <div class="expense-form-container" style="padding: var(--space-md);">
+                    <div class="expense-form"
+                        style="background: var(--bg-secondary); border-radius: var(--radius-lg); padding: var(--space-lg); border: 1px solid var(--border-subtle);">
+                        <div
+                            style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-sm); gap: 12px;">
+                            <h3
+                                style="color: var(--text-primary); font-size: 1rem; display: flex; align-items: center; gap: 8px; margin: 0;">
+                                <i data-lucide="plus-circle"
+                                    style="width: 20px; height: 20px; color: var(--accent-primary);"></i>
+                                Registrar Gasto
+                            </h3>
+                            <input type="date" id="expenseDate"
+                                style="width: auto; padding: 6px 10px; background: var(--bg-tertiary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-size: 0.8rem; box-sizing: border-box;">
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm);">
+                            <div style="grid-column: 1 / -1;">
+                                <label
+                                    style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; display: block;">Categoría</label>
+                                <select id="expenseCategory"
+                                    style="width: 100%; padding: 10px 12px; background: var(--bg-tertiary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-size: 0.9rem;">
+                                    <!-- Populated dynamically from admin categories -->
+                                </select>
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label
+                                    style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; display: block;">DescripciÃ³n</label>
+                                <input type="text" id="expenseDescription"
+                                    placeholder="Ej: Compra de pan, pago de luz..."
+                                    style="width: 100%; padding: 10px 12px; background: var(--bg-tertiary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-size: 0.9rem; box-sizing: border-box;">
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <div style="display: flex; flex-direction: column; gap: 4px;">
+                                    <label
+                                        style="font-size: 0.75rem; color: var(--text-muted); display: block;">Cantidad</label>
+                                    <input type="number" id="expenseQty" placeholder="1"
+                                        style="width: 100%; padding: 10px 12px; background: var(--bg-tertiary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-size: 0.9rem; box-sizing: border-box;">
+                                </div>
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                    <label style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">Monto
+                                        ($)</label>
+                                    <span id="expenseAmountPreview"
+                                        style="font-size: 0.9rem; font-weight: 800; color: var(--accent-primary);">$0</span>
+                                </div>
+                                <input type="number" id="expenseAmount" placeholder="0"
+                                    style="width: 100%; padding: 12px; background: var(--bg-tertiary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-size: 1.1rem; font-weight: 700; box-sizing: border-box;">
+                            </div>
+                        </div>
+                        <button id="addExpenseBtn"
+                            style="margin-top: var(--space-md); width: 100%; padding: 12px; background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; border-radius: var(--radius-md); font-weight: 700; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <i data-lucide="minus-circle" style="width: 18px; height: 18px;"></i>
+                            Registrar Gasto
+                        </button>
+                    </div>
+                </div>
+
+                <div style="padding: 0 var(--space-md); margin-bottom: var(--space-sm);">
+                    <div style="display: flex; gap: var(--space-sm); align-items: center;">
+                        <select id="expensePeriodSelect"
+                            style="flex: 1; padding: 10px 12px; background: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-size: 0.85rem;">
+                            <option value="today">Hoy</option>
+                            <option value="month">Este Mes</option>
+                            <option value="specific-month">Mes EspecÃ­fico</option>
+                            <option value="total">Todo</option>
+                        </select>
+                        <input type="month" id="expenseMonthPicker" class="hidden"
+                            style="flex: 1; padding: 10px 12px; background: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-size: 0.85rem;">
+                    </div>
+                </div>
+
+                <!-- Expense Summary Cards -->
+                <div style="padding: 0 var(--space-md); margin-bottom: var(--space-md);">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm);">
+                        <div
+                            style="background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); border-radius: var(--radius-lg); padding: var(--space-md);">
+                            <div
+                                style="font-size: 0.7rem; color: rgba(255,255,255,0.8); font-weight: 600; text-transform: uppercase;">
+                                Ingresos (Ventas)</div>
+                            <div id="expenseTotalIncome" style="font-size: 1.2rem; font-weight: 800; color: white;">$0
+                            </div>
+                        </div>
+                        <div
+                            style="background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); border-radius: var(--radius-lg); padding: var(--space-md);">
+                            <div
+                                style="font-size: 0.7rem; color: rgba(255,255,255,0.8); font-weight: 600; text-transform: uppercase;">
+                                Gastos (Gastos)</div>
+                            <div id="expenseTotalAmount" style="font-size: 1.2rem; font-weight: 800; color: white;">$0
+                            </div>
+                        </div>
+                        <div
+                            style="background: var(--bg-secondary); border-radius: var(--radius-lg); padding: var(--space-md); grid-column: 1 / -1; border: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div
+                                    style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">
+                                    Saldo en Caja</div>
+                                <div id="expenseNetBalance"
+                                    style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary);">$0</div>
+                            </div>
+                            <div id="balanceStatus"
+                                style="padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="expenseCategorySummary"
+                        style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); margin-top: var(--space-sm);">
+                    </div>
+                </div>
+
+                <div style="padding: 0 var(--space-md) var(--space-md);">
+                    <div
+                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-sm);">
+                        <h3 style="color: var(--text-primary); font-size: 0.9rem; margin: 0;">Registro de Gastos</h3>
+                        <button onclick="window.downloadExpensesExcel()"
+                            style="background: none; border: none; color: var(--accent-primary); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 4px;"
+                            title="Descargar Excel Gastos">
+                            <i data-lucide="file-spreadsheet"></i>
+                        </button>
+                    </div>
+
+                    <!-- Description Search -->
+                    <div style="margin-bottom: var(--space-sm); position: relative;">
+                        <input type="text" id="expenseSearchInput" placeholder="Buscar descripciÃ³n..."
+                            style="width: 100%; padding: 8px 12px 8px 32px; background: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-size: 0.85rem; box-sizing: border-box;">
+                        <i data-lucide="search"
+                            style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; color: var(--text-muted);"></i>
+                    </div>
+
+                    <div id="expensesList" style="display: flex; flex-direction: column; gap: var(--space-xs);"></div>
+                </div>
+            </div>
+
+            <!-- Admin Page -->
+            <div class="page" id="page-admin">
+                <div class="page-title-bar">
+                    <h2>Administración del Sistema</h2>
+                </div>
+
+                <div class="admin-tabs">
+                    <button class="admin-tab active" data-tab="categories">Categorías</button>
+                    <button class="admin-tab" data-tab="flavors">Productos</button>
+                    
+                    <button class="admin-tab" data-tab="expense-cats">Gastos</button>
+                    <button class="admin-tab" data-tab="security">Seguridad</button>
+                </div>
+
+                <div class="admin-content">
+                    <!-- Categories Panel -->
+                    <div class="admin-panel active" id="panel-categories">
+                        <div class="panel-header">
+                            <h3>Gestionar Categorías</h3>
+                            <button class="btn-add" id="addCategoryBtn">
+                                <i data-lucide="plus"></i> Nueva CategorÃ­a
+                            </button>
+                        </div>
+                        <div class="admin-list" id="adminCategoriesList"></div>
+                    </div>
+
+                    <!-- Products Panel -->
+                    <div class="admin-panel" id="panel-flavors">
+                        <div class="panel-header">
+                            <h3>Gestionar Productos</h3>
+                            <select id="adminCategorySelectFlavors" class="admin-category-selector">
+                                <!-- Categories populated via JS -->
+                            </select>
+                        </div>
+                        <div class="admin-list" id="adminFlavorsList"></div>
+                        <button class="btn-add-inline" id="addFlavorBtn">
+                            <i data-lucide="plus"></i> Agregar Producto
+                        </button>
+                    </div>
+
+                    <!-- Expense Categories Panel -->
+                    <div class="admin-panel" id="panel-expense-cats">
+                        <div class="panel-header">
+                            <h3>Categorías de Gastos</h3>
+                        </div>
+                        <div id="expenseCatManager"></div>
+                    </div>
+
+                    <!-- Security Panel -->
+                    <div class="admin-panel" id="panel-security">
+                        <div class="panel-header">
+                            <h3>Seguridad y Acceso</h3>
+                        </div>
+                        <div class="security-card">
+                            <h4><i data-lucide="shield-check"></i> Cambiar Contrase&ntilde;a de Administrador</h4>
+                            <div class="form-group">
+                                <label>Nueva Contrase&ntilde;a</label>
+                                <input type="password" id="newAdminPassword" placeholder="M&iacute;nimo 4 caracteres">
+                            </div>
+                            <div class="form-group">
+                                <label>Confirmar Contrase&ntilde;a</label>
+                                <input type="password" id="confirmAdminPassword" placeholder="Repite la Contrase&ntilde;a">
+                            </div>
+                            <button class="btn-pay" id="saveAdminPasswordBtn"
+                                style="width: 100%; margin-top: var(--space-md);">
+                                <i data-lucide="save"></i> Actualizar Contrase&ntilde;a
+                            </button>
+                            <p
+                                style="font-size: 0.75rem; color: var(--text-muted); margin-top: var(--space-md); text-align: center;">
+                                <i data-lucide="info" style="width: 12px; height: 12px; vertical-align: middle;"></i>
+                                La nueva Contrase&ntilde;a se sincronizar&aacute; con todos los dispositivos.
+                            </p>
+                        </div>
+
+                        <!-- Reset Order Counter Section -->
+                        <div class="security-card"
+                            style="margin-top: var(--space-lg); border: 2px solid var(--warning-color, #f59e0b);">
+                            <h4><i data-lucide="refresh-cw"></i> Reiniciar Contador de Pedidos</h4>
+                            <p
+                                style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: var(--space-md);">
+                                Reinicia el contador de pedidos a #001. &Uacute;til para pruebas o inicio de jornada.
+                            </p>
+                            <div
+                                style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-md);">
+                                <span style="font-size: 0.9rem;">Contador actual:</span>
+                                <span id="currentOrderCounter"
+                                    style="font-weight: 700; font-size: 1.1rem; color: var(--accent-primary);">#---</span>
+                            </div>
+                            <button class="btn-add" id="resetOrderCounterBtn"
+                                style="width: 100%; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; border: none;">
+                                <i data-lucide="rotate-ccw"></i> Reiniciar a #001
+                            </button>
+                            <p
+                                style="font-size: 0.75rem; color: var(--text-muted); margin-top: var(--space-md); text-align: center;">
+                                <i data-lucide="alert-triangle"
+                                    style="width: 12px; height: 12px; vertical-align: middle; color: #f59e0b;"></i>
+                                Esta acci&oacute;n se sincroniza en todos los dispositivos.
+                            </p>
+                                                <div class="security-card" style="margin-top: var(--space-xl); border: 1px solid var(--accent-danger);">
+                            <h4><i data-lucide="alert-triangle" style="color: var(--accent-danger);"></i> Limpiar Datos del Sistema</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: var(--space-md);">Esta acci&oacute;n eliminar&aacute; todos los pedidos, ventas, reportes y gastos registrados en el historial. No afectar&aacute; a la configuraci&oacute;n, categor&iacute;as, productos ni adicionales.</p>
+                            <button class="btn-delete" onclick="window.clearSystemData()" style="width: 100%;">
+                                <i data-lucide="trash-2"></i> Borrar Todo el Historial
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generic Admin Modal -->
+            <div class="modal" id="adminModal">
+                <div class="modal-overlay"></div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 id="adminModalTitle">Editar Elemento</h3>
+                        <button class="close-modal" id="closeAdminModal">&times;</button>
+                    </div>
+                    <div class="modal-body" id="adminModalBody">
+                        <!-- Form fields generated by JS -->
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn-cancel" id="cancelAdminModal">Cancelar</button>
+                        <button class="btn-confirm" id="confirmAdminModal">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item Note Modal -->
+            <div class="modal" id="itemNoteModal">
+                <div class="modal-overlay" id="closeItemNoteOverlay"></div>
+                <div class="modal-content" style="max-width: 360px;">
+                    <div class="modal-header">
+                        <h3 id="itemNoteModalTitle">Nota / ObservaciÃ³n</h3>
+                        <button class="close-modal" id="closeItemNoteModal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="itemNoteModalProductName" style="font-size: 0.9rem; font-weight: 700; color: var(--accent-secondary); margin-bottom: 8px;"></p>
+                        <textarea id="itemNoteModalInput" placeholder="Ej: Sin azÃºcar, bien caliente, porciÃ³n doble..." style="width: 100%; height: 75px; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-default); background: var(--bg-input); color: var(--text-primary); font-family: inherit; resize: none;"></textarea>
+                        <div id="itemNoteQuickTags" style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px;"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn-cancel" id="cancelItemNoteModal">Cancelar</button>
+                        <button class="btn-confirm" id="saveItemNoteModal">Guardar Nota</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer Actions -->
+        <footer class="app-footer" id="appFooter">
+            <button class="send-kitchen-btn" id="sendToKitchenBtn">
+                <i data-lucide="send"></i>
+                <span>GENERAR</span>
+            </button>
+            <div class="total-display">
+                <span class="total-label">TOTAL VENTA</span>
+                <span class="total-amount" id="totalAmount">$0</span>
+            </div>
+        </footer>
+
+        <!-- Client Info Modal (only for adding to order) -->
+        <div class="modal" id="clientModal">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="clientModalTitle">Mesa / Cliente</h3>
+                    <button class="modal-close" id="closeClientModal">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="clientInput" placeholder="NÃºmero de mesa o nombre" class="modal-input"
+                        autofocus>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-cancel" id="cancelClientModal">Cancelar</button>
+                    <button class="btn-confirm" id="confirmClientModal">Agregar</button>
+                </div>
+            </div>
+        </div>
+        <!-- Ticket Modal -->
+        <div class="modal" id="ticketModal">
+            <div class="modal-overlay" id="closeTicketModal"></div>
+            <div class="modal-content" style="max-width: 320px;">
+                <div class="modal-header">
+                    <h3>Confirmar Pedido</h3>
+                    <button class="close-modal" id="cancelTicket">&times;</button>
+                </div>
+                <div class="modal-body" style="padding: 0;">
+                    <div class="ticket-container" style="background: white; padding: var(--space-md);">
+                        <pre class="ticket-content" id="ticketContent"
+                            style="font-family: 'Courier New', Courier, monospace; font-size: 11px; white-space: pre; color: black;"></pre>
+                    </div>
+                </div>
+                <div class="modal-footer"
+                    style="flex-direction: column; gap: var(--space-md); padding: var(--space-lg);">
+                    <button class="btn-confirm" id="confirmTicket"
+                        style="width: 100%; height: 50px; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i data-lucide="send"></i> GENERAR
+                    </button>
+                    <button class="btn-cancel" id="cancelTicketFooter"
+                        style="width: 100%; height: 45px; font-size: 0.9rem; margin-top: 4px;">
+                        Volver a Corregir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div> <!-- Final de app-container -->
+
+    <!-- Admin Login Modal -->
+    <div class="modal" id="adminLoginModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content" style="max-width: 320px;">
+            <div class="modal-header">
+                <h3>Acceso Restringido</h3>
+                <button class="close-modal" id="closeAdminLoginModal" onclick="forceCloseLogin()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: var(--space-xl) var(--space-lg);">
+                <div style="text-align: center; margin-bottom: var(--space-lg);">
+                    <div
+                        style="width: 60px; height: 60px; background: rgba(245, 158, 11, 0.1); color: var(--status-pending); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-sm);">
+                        <i data-lucide="lock" style="width: 30px; height: 30px;"></i>
+                    </div>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary);">Ingresa la Contrase&ntilde;a de administrador
+                    </p>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="adminPasswordInput" placeholder="Contrase&ntilde;a"
+                        style="text-align: center; font-size: 1.2rem; letter-spacing: 4px;" autofocus>
+                </div>
+                <button class="btn-confirm" id="confirmAdminLogin" onclick="forceLogin()" style="width: 100%; height: 48px; font-size: 1rem;">
+                    Entrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+
+        <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+
+    <!-- Scripts -->
+    <script src="js/data.js?v=97"></script>
+    
+    <script src="js/storage.js?v=97"></script>
+    <script src="js/app.js?v=110"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW Registered'))
+                    .catch(err => console.log('SW Error:', err));
+            });
+        }
+    </script>
+<script>
+function forceLogin() {
+    const pwd = document.getElementById('adminPasswordInput').value;
+    const configStr = localStorage.getItem('galeria_admin_password') || '1234';
+    if (pwd === configStr) {
+        document.getElementById('adminLoginModal').classList.remove('open');
+        if (window.appState) {
+            window.appState.isAdminAuthenticated = true;
+            // Force click the pending page if set
+            if (window.appState.pendingAdminPage) {
+                const targetBtn = Array.from(document.querySelectorAll('.drawer-item')).find(i => i.dataset.page === window.appState.pendingAdminPage);
+                if (targetBtn) targetBtn.click();
+                window.appState.pendingAdminPage = null;
+            } else {
+                alert('Acceso concedido. Ya puedes navegar por el menú administrador.');
+            }
+        } else {
+            alert('Error: appState no encontrado.');
+        }
+    } else {
+        alert('Contraseña incorrecta');
+    }
+}
+function forceCloseLogin() {
+    document.getElementById('adminLoginModal').classList.remove('open');
+}
+</script></body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

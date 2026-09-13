@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Wipe Database</title>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/storage.js"></script>
+</head>
+<body>
+    <h1>Borrando base de datos...</h1>
+    <script>
+        setTimeout(() => {
+            StorageManager.saveConfig({
+                categories: [],
+                products: [],
+                flavors: {},
+                extras: {},
+                observations: {},
+                prices: {},
+                adminPassword: '1234'
+            });
+            document.body.innerHTML = "<h1>¡Base de datos borrada con éxito!</h1><p>Ya puedes volver a la página principal y presionar Ctrl+F5.</p>";
+        }, 1500);
+    </script>
+</body>
+</html>
