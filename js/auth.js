@@ -15,12 +15,25 @@
     // Auth State Listener
     window.auth.onAuthStateChanged((user) => {
         if (user) {
-            // User is signed in
+                        // User is signed in
             loginOverlay.style.display = 'none';
             if(appContainer) appContainer.style.display = 'flex';
             
-            // Note: Later we can set a global variable here like window.currentUserTenant = user.uid
-            // to isolate database queries.
+            // MULTI-TENANT: Set the global tenant ID to the user's UID
+            window.currentUserTenant = user.uid;
+            
+            // Reload the configuration and initialize cloud sync for this specific tenant
+            const config = StorageManager.getConfig();
+            Object.assign(FOODX_DATA, config);
+            if (typeof renderPosCart === 'function') {
+                try {
+                    StorageManager.initCloudSync(
+                        () => { if(typeof renderPosCart === 'function') renderPosCart(); },
+                        () => { if(typeof renderSplitUI === 'function') renderSplitUI(); },
+                        (order) => { if(typeof showNotification === 'function') showNotification('Pedido sincronizado'); }
+                    );
+                } catch(e) {}
+            }
         } else {
             // User is signed out
             loginOverlay.style.display = 'flex';
@@ -57,8 +70,11 @@
     // Logout Click
     if(logoutBtn) {
         logoutBtn.addEventListener('click', () => {
+            StorageManager.clearAll();
             window.auth.signOut();
         });
     }
 });
+
+
 
