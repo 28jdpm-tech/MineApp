@@ -3,8 +3,13 @@
 // ============================================
 
 // Unique prefix for this specific application to prevent crossover
-const PREFIX = 'galeria_';
+const PREFIX = 'mineapp_';
 
+// Multi-tenant Firestore helper
+function getDbCollection(key) {
+    const tenantId = window.currentUserTenant || 'default_tenant';
+    return getDbCollection('tenants').doc(tenantId).collection(key);
+}
 const STORAGE_KEYS = {
     ORDERS: PREFIX + 'orders',
     SETTINGS: PREFIX + 'settings',
@@ -193,7 +198,7 @@ const StorageManager = {
     async syncOrderToCloud(order) {
         if (typeof db === 'undefined') return;
         try {
-            await db.collection(STORAGE_KEYS.ORDERS).doc(order.id).set(order, { merge: true });
+            await getDbCollection(STORAGE_KEYS.ORDERS).doc(order.id).set(order, { merge: true });
         } catch (e) {
             console.error('Error syncing order:', e);
         }
@@ -202,7 +207,7 @@ const StorageManager = {
     async deleteOrderFromCloud(orderId) {
         if (typeof db === 'undefined') return;
         try {
-            await db.collection(STORAGE_KEYS.ORDERS).doc(orderId).delete();
+            await getDbCollection(STORAGE_KEYS.ORDERS).doc(orderId).delete();
         } catch (e) {
             console.error('Error deleting order:', e);
         }
@@ -211,7 +216,7 @@ const StorageManager = {
     async syncConfigToCloud(config) {
         if (typeof db === 'undefined') return;
         try {
-            await db.collection(STORAGE_KEYS.SETTINGS).doc('global_config').set(config, { merge: true });
+            await getDbCollection(STORAGE_KEYS.SETTINGS).doc('global_config').set(config, { merge: true });
         } catch (e) {
             console.error('Error syncing config:', e);
         }
@@ -220,7 +225,7 @@ const StorageManager = {
     async syncExpenseToCloud(expense) {
         if (typeof db === 'undefined') return;
         try {
-            await db.collection(STORAGE_KEYS.EXPENSES).doc(expense.id).set(expense, { merge: true });
+            await getDbCollection(STORAGE_KEYS.EXPENSES).doc(expense.id).set(expense, { merge: true });
         } catch (e) {
             console.error('Error syncing expense:', e);
         }
@@ -229,7 +234,7 @@ const StorageManager = {
     async deleteExpenseFromCloud(expenseId) {
         if (typeof db === 'undefined') return;
         try {
-            await db.collection(STORAGE_KEYS.EXPENSES).doc(expenseId).delete();
+            await getDbCollection(STORAGE_KEYS.EXPENSES).doc(expenseId).delete();
         } catch (e) {
             console.error('Error deleting expense:', e);
         }
@@ -242,7 +247,7 @@ const StorageManager = {
         }
 
         // 1. Escuchar Configuración Global
-        db.collection(STORAGE_KEYS.SETTINGS).doc('global_config').onSnapshot(doc => {
+        getDbCollection(STORAGE_KEYS.SETTINGS).doc('global_config').onSnapshot(doc => {
             if (doc.exists) {
                 const data = doc.data();
                 if (data.categories) localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(data.categories));
@@ -264,7 +269,7 @@ const StorageManager = {
         today.setDate(today.getDate() - 1);
         const dateStr = today.toISOString().split('T')[0];
 
-        db.collection(STORAGE_KEYS.ORDERS)
+        getDbCollection(STORAGE_KEYS.ORDERS)
             .where('createdAt', '>=', dateStr)
             .onSnapshot(snapshot => {
                 let localOrders = this.getOrders();
@@ -294,7 +299,7 @@ const StorageManager = {
             });
 
         // 3. Escuchar Egresos
-        db.collection(STORAGE_KEYS.EXPENSES)
+        getDbCollection(STORAGE_KEYS.EXPENSES)
             .where('createdAt', '>=', dateStr)
             .onSnapshot(snapshot => {
                 let local = this.getExpenses();
@@ -447,6 +452,7 @@ StorageManager.configLoaded = false;
     StorageManager.configLoaded = true;
     window.dispatchEvent(new CustomEvent('configLoadedFromCloud')); // Kept name for compatibility
 })();
+
 
 
 

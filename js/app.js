@@ -3711,7 +3711,7 @@ function renderSplitUI() {
             const expenses = StorageManager.getExpenses();
             if (typeof db !== 'undefined') {
                 for (let e of expenses) {
-                    try { await db.collection(STORAGE_KEYS.EXPENSES).doc(e.id).delete(); } catch(err) {}
+                    try { await getDbCollection(STORAGE_KEYS.EXPENSES).doc(e.id).delete(); } catch(err) {}
                 }
             }
 
@@ -3728,6 +3728,7 @@ function renderSplitUI() {
             showNotification("Error al limpiar historial", "error");
         }
     };
+
 
 
 
