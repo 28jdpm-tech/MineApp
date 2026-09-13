@@ -801,8 +801,21 @@
 
                     <!-- Security Panel -->
                     <div class="admin-panel" id="panel-security">
-                        <div class="panel-header">
-                            <h3>Seguridad y Acceso</h3>
+                                                <div class="panel-header">
+                            <h3>Ajustes del Negocio</h3>
+                        </div>
+                        
+                        <div class="security-card" style="margin-bottom: 20px;">
+                            <h4><i data-lucide="briefcase"></i> Identidad del Negocio</h4>
+                            <div class="form-group">
+                                <label>Nombre del Negocio</label>
+                                <input type="text" id="businessNameInput" class="config-input" placeholder="Ej: Pizzer&iacute;a Juan" style="width:100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                            </div>
+                            <div class="form-group" style="margin-top: 10px;">
+                                <label>URL del Logo (Opcional)</label>
+                                <input type="text" id="businessLogoInput" class="config-input" placeholder="https://ejemplo.com/logo.png" style="width:100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                            </div>
+                            <button class="btn-primary" id="saveBusinessBrandBtn" style="margin-top: 15px; width: 100%; padding: 12px; border-radius: 8px; background: #2563eb; color: white; border: none; font-weight: bold; cursor: pointer;">Guardar Identidad</button>
                         </div>
                         <div class="security-card">
                             <h4><i data-lucide="shield-check"></i> Cambiar Contrase&ntilde;a de Administrador</h4>
@@ -1041,6 +1054,8 @@ function forceCloseLogin() {
 </script></body>
 
 </html>
+
+
 
 
 
