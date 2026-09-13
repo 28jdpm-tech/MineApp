@@ -3,6 +3,49 @@
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Business Branding Logic ---
+    const businessNameInput = document.getElementById('businessNameInput');
+    const businessLogoInput = document.getElementById('businessLogoInput');
+    const saveBusinessBrandBtn = document.getElementById('saveBusinessBrandBtn');
+    
+    function updateAppBranding() {
+        const config = StorageManager.getConfig();
+        const bName = config.businessName || '`" + ((FOODX_DATA.businessName || `"MINEAPP`").toUpperCase()) + `"';
+        const bLogo = config.businessLogo || '';
+        
+        const headerName = document.getElementById('headerBusinessName');
+        const headerLogo = document.getElementById('headerBusinessLogo');
+        
+        if (headerName) headerName.textContent = bName;
+        if (headerLogo) {
+            if (bLogo) {
+                headerLogo.src = bLogo;
+                headerLogo.style.display = 'block';
+            } else {
+                headerLogo.style.display = 'none';
+            }
+        }
+        
+        if (businessNameInput) businessNameInput.value = bName;
+        if (businessLogoInput) businessLogoInput.value = bLogo;
+    }
+    
+    if (saveBusinessBrandBtn) {
+        saveBusinessBrandBtn.addEventListener('click', () => {
+            const config = StorageManager.getConfig();
+            config.businessName = businessNameInput.value.trim();
+            config.businessLogo = businessLogoInput.value.trim();
+            StorageManager.saveConfig(config);
+            updateAppBranding();
+            showNotification('Identidad guardada');
+        });
+    }
+
+    // Escuchar cambios de configuracion para actualizar logo
+    window.addEventListener('configLoadedFromCloud', updateAppBranding);
+    
+    // Inicializar branding al cargar
+    updateAppBranding();
     // Initialize Lucide icons
     if (typeof lucide !== 'undefined') lucide.createIcons();
 
@@ -3728,6 +3771,7 @@ function renderSplitUI() {
             showNotification("Error al limpiar historial", "error");
         }
     };
+
 
 
 
