@@ -87,6 +87,8 @@ const StorageManager = {
         const parsedProducts = products ? JSON.parse(products) : (FOODX_DATA.products || []);
 
         const config = {
+            businessName: localStorage.getItem(PREFIX + 'businessName') || FOODX_DATA.businessName,
+            businessLogo: localStorage.getItem(PREFIX + 'businessLogo') || FOODX_DATA.businessLogo,
             categories: parsedCategories,
             products: parsedProducts,
             flavors: flavors ? JSON.parse(flavors) : FOODX_DATA.flavors,
@@ -145,6 +147,8 @@ const StorageManager = {
         if (config.flavors) localStorage.setItem(STORAGE_KEYS.FLAVORS, JSON.stringify(config.flavors));
         if (config.extras) localStorage.setItem(STORAGE_KEYS.EXTRAS, JSON.stringify(config.extras));
         if (config.observations) localStorage.setItem('galeria_observations', JSON.stringify(config.observations));
+        if (config.businessName) localStorage.setItem(PREFIX + 'businessName', config.businessName);
+        if (config.businessLogo) localStorage.setItem(PREFIX + 'businessLogo', config.businessLogo);
         if (config.prices) localStorage.setItem(STORAGE_KEYS.PRICES, JSON.stringify(config.prices));
         if (config.adminPassword) localStorage.setItem('galeria_admin_password', config.adminPassword);
 
@@ -255,6 +259,8 @@ const StorageManager = {
                 if (data.flavors) localStorage.setItem(STORAGE_KEYS.FLAVORS, JSON.stringify(data.flavors));
                 if (data.extras) localStorage.setItem(STORAGE_KEYS.EXTRAS, JSON.stringify(data.extras));
                 if (data.observations) localStorage.setItem('galeria_observations', JSON.stringify(data.observations));
+                if (data.businessName) localStorage.setItem(PREFIX + 'businessName', data.businessName);
+                if (data.businessLogo) localStorage.setItem(PREFIX + 'businessLogo', data.businessLogo);
                 if (data.prices) localStorage.setItem(STORAGE_KEYS.PRICES, JSON.stringify(data.prices));
                 if (data.adminPassword) localStorage.setItem('galeria_admin_password', data.adminPassword);
 
@@ -452,6 +458,8 @@ StorageManager.configLoaded = false;
     StorageManager.configLoaded = true;
     window.dispatchEvent(new CustomEvent('configLoadedFromCloud')); // Kept name for compatibility
 })();
+
+
 
 
 
