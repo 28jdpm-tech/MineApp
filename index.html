@@ -33,7 +33,7 @@
     <div id="loginOverlay" class="login-overlay">
         <div class="login-card">
             <div class="login-header">
-                <h2>Bienvenido a MineApp</h2>
+                <h2 id="authTitle">Bienvenido a MineApp</h2>
                 <p>Inicia sesi&oacute;n para acceder a tu sistema</p>
             </div>
             <form id="loginForm">
@@ -46,7 +46,7 @@
                     <input type="password" id="loginPassword" placeholder="******" required>
                 </div>
                 <div id="loginError" class="login-error" style="display: none;"></div>
-                <button type="submit" class="btn-login" id="loginBtn">Ingresar</button>
+                <button type="submit" class="btn-login" id="loginBtn">Ingresar</button><div style="text-align: center; margin-top: 20px;"><a href="#" id="authToggleLink" style="color: #2563eb; text-decoration: none; font-weight: 500; font-size: 0.95rem;">&iquest;No tienes cuenta? Reg&iacute;strate aqu&iacute;</a></div>
             </form>
         </div>
     </div>
@@ -1054,6 +1054,9 @@ function forceCloseLogin() {
 </script></body>
 
 </html>
+
+
+
 
 
 

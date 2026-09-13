@@ -50,6 +50,27 @@
         }
     });
 
+        const authTitle = document.getElementById('authTitle');
+    const authToggleLink = document.getElementById('authToggleLink');
+    const btn = document.getElementById('loginBtn');
+    let isLoginMode = true;
+
+    if (authToggleLink) {
+        authToggleLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            isLoginMode = !isLoginMode;
+            if (isLoginMode) {
+                authTitle.textContent = 'Bienvenido a MineApp';
+                btn.textContent = 'Ingresar';
+                authToggleLink.innerHTML = '&iquest;No tienes cuenta? Reg&iacute;strate aqu&iacute;';
+            } else {
+                authTitle.textContent = 'Crear Nueva Cuenta';
+                btn.textContent = 'Registrarse';
+                authToggleLink.innerHTML = '&iquest;Ya tienes cuenta? Inicia Sesi&oacute;n';
+            }
+        });
+    }
+
     // Login Submit
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -57,23 +78,36 @@
         const password = loginPassword.value;
         
         loginError.style.display = 'none';
-        const btn = document.getElementById('loginBtn');
-        btn.textContent = 'Iniciando...';
+        btn.textContent = 'Procesando...';
         btn.disabled = true;
 
-        window.auth.signInWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                // Success, onAuthStateChanged will handle the UI
-                btn.textContent = 'Ingresar';
-                btn.disabled = false;
-                loginForm.reset();
-            })
-            .catch((error) => {
-                loginError.textContent = 'Error: ' + error.message;
-                loginError.style.display = 'block';
-                btn.textContent = 'Ingresar';
-                btn.disabled = false;
-            });
+        if (isLoginMode) {
+            window.auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    btn.textContent = 'Ingresar';
+                    btn.disabled = false;
+                    loginForm.reset();
+                })
+                .catch((error) => {
+                    loginError.textContent = 'Error: ' + error.message;
+                    loginError.style.display = 'block';
+                    btn.textContent = 'Ingresar';
+                    btn.disabled = false;
+                });
+        } else {
+            window.auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    btn.textContent = 'Registrarse';
+                    btn.disabled = false;
+                    loginForm.reset();
+                })
+                .catch((error) => {
+                    loginError.textContent = 'Error: ' + error.message;
+                    loginError.style.display = 'block';
+                    btn.textContent = 'Registrarse';
+                    btn.disabled = false;
+                });
+        }
     });
 
     // Logout Click
@@ -84,5 +118,8 @@
         });
     }
 });
+
+
+
 
 
