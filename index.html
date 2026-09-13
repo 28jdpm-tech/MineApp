@@ -5,8 +5,8 @@
     <script>window.onerror = function(msg, url, lineNo, columnNo, error) { alert('Error: ' + msg + '\nLínea: ' + lineNo); return false; };</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GALERÍA AYC - Sistema de GestiÃ³n</title>
-    <meta name="description" content="Sistema de gestiÃ³n para GALERÍA AYC">
+    <title>MineApp - Sistema de GestiÃ³n</title>
+    <meta name="description" content="Sistema de gestiÃ³n para MineApp">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,11 +29,33 @@
 </head>
 
 <body>
+    <!-- Login Screen -->
+    <div id="loginOverlay" class="login-overlay">
+        <div class="login-card">
+            <div class="login-header">
+                <h2>Bienvenido a MineApp</h2>
+                <p>Inicia sesi&oacute;n para acceder a tu sistema</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Correo Electr&oacute;nico</label>
+                    <input type="email" id="loginEmail" placeholder="usuario@mineapp.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Contrase&ntilde;a</label>
+                    <input type="password" id="loginPassword" placeholder="******" required>
+                </div>
+                <div id="loginError" class="login-error" style="display: none;"></div>
+                <button type="submit" class="btn-login" id="loginBtn">Ingresar</button>
+            </form>
+        </div>
+    </div>
+
     <div class="app-container">
         <!-- Header -->
         <header class="app-header">
             <div class="header-brand">
-                <span class="brand-name">GALERÍA AYC</span>
+                <span class="brand-name">MineApp</span>
                 <span class="brand-subtitle">ORDERING</span>
             </div>
             <button class="menu-btn" id="menuBtn">
@@ -46,7 +68,7 @@
             <div class="drawer-overlay" id="drawerOverlay"></div>
             <div class="drawer-content">
                 <div class="drawer-header">
-                    <span class="brand-name">GALERÍA AYC</span>
+                    <span class="brand-name">MineApp</span>
                     <button class="close-drawer" id="closeDrawer">
                         <i data-lucide="x"></i>
                     </button>
@@ -77,7 +99,10 @@
                         <i data-lucide="settings"></i>
                         <span>Admin</span>
                     </a>
-                </nav>
+                            <button class="nav-item" id="logoutBtn" style="margin-top: auto; color: #ef4444;">
+                <i data-lucide="log-out"></i> Cerrar Sesi&oacute;n
+            </button>
+        </nav>
                 <div class="drawer-footer">
                     <div class="user-badge">
                         <i data-lucide="user"></i>
@@ -967,6 +992,7 @@
         <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="js/firebase-config.js"></script>
 
     <!-- Scripts -->
@@ -1012,6 +1038,8 @@ function forceCloseLogin() {
 </script></body>
 
 </html>
+
+
 
 
 
