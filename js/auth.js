@@ -13,7 +13,7 @@
     }
 
     // Auth State Listener
-    auth.onAuthStateChanged((user) => {
+    window.auth.onAuthStateChanged((user) => {
         if (user) {
             // User is signed in
             loginOverlay.style.display = 'none';
@@ -39,7 +39,7 @@
         btn.textContent = 'Iniciando...';
         btn.disabled = true;
 
-        auth.signInWithEmailAndPassword(email, password)
+        window.auth.signInWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 // Success, onAuthStateChanged will handle the UI
                 btn.textContent = 'Ingresar';
@@ -57,7 +57,8 @@
     // Logout Click
     if(logoutBtn) {
         logoutBtn.addEventListener('click', () => {
-            auth.signOut();
+            window.auth.signOut();
         });
     }
 });
+
