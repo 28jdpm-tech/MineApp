@@ -63,7 +63,8 @@
             window.auth.languageCode = 'es';
             window.auth.sendPasswordResetEmail(email)
                 .then(() => {
-                    alert('Correo de recuperaci\u00f3n enviado a ' + email + '. Por favor revisa tu bandeja de entrada o spam.');
+                    alert('\u00a1Correo enviado a ' + email + '!\n\n1. Revisa tu bandeja (o Spam) y haz clic en el enlace para crear tu nueva contrase\u00f1a.\n2. Luego, regresa a esta pantalla e inicia sesi\u00f3n normalmente.');
+                    document.getElementById('loginPassword').value = '';
                 })
                 .catch((error) => {
                     alert('Error al recuperar contrase\u00f1a: ' + error.message);
@@ -138,6 +139,7 @@
         });
     }
 });
+
 
 
 
