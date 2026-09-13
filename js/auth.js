@@ -50,7 +50,26 @@
         }
     });
 
-        const authTitle = document.getElementById('authTitle');
+        
+    const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+    if (forgotPasswordLink) {
+        forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const email = loginEmail.value.trim();
+            if (!email) {
+                alert('Por favor, ingresa tu correo electr\u00f3nico en el campo de arriba para enviarte el enlace de recuperaci\u00f3n.');
+                return;
+            }
+            window.auth.sendPasswordResetEmail(email)
+                .then(() => {
+                    alert('Correo de recuperaci\u00f3n enviado a ' + email + '. Por favor revisa tu bandeja de entrada o spam.');
+                })
+                .catch((error) => {
+                    alert('Error al recuperar contrase\u00f1a: ' + error.message);
+                });
+        });
+    }
+
     const authToggleLink = document.getElementById('authToggleLink');
     const btn = document.getElementById('loginBtn');
     let isLoginMode = true;
@@ -118,6 +137,7 @@
         });
     }
 });
+
 
 
 

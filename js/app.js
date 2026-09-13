@@ -3,7 +3,36 @@
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Business Branding Logic ---
+        // --- Account (Login) Password Change Logic ---
+    const saveAccountPasswordBtn = document.getElementById('saveAccountPasswordBtn');
+    const newAccountPassword = document.getElementById('newAccountPassword');
+    
+    if (saveAccountPasswordBtn && newAccountPassword) {
+        saveAccountPasswordBtn.addEventListener('click', () => {
+            const newPass = newAccountPassword.value;
+            if (newPass.length < 6) {
+                showNotification('La contrase\u00f1a debe tener al menos 6 caracteres', 'error');
+                return;
+            }
+            const user = window.auth ? window.auth.currentUser : null;
+            if (user) {
+                user.updatePassword(newPass).then(() => {
+                    showNotification('Contrase\u00f1a de ingreso actualizada exitosamente');
+                    newAccountPassword.value = '';
+                }).catch((error) => {
+                    if (error.code === 'auth/requires-recent-login') {
+                        showNotification('Por seguridad, debes cerrar sesi\u00f3n y volver a entrar antes de cambiar tu contrase\u00f1a.', 'error');
+                    } else {
+                        showNotification('Error al cambiar contrase\u00f1a: ' + error.message, 'error');
+                    }
+                });
+            } else {
+                showNotification('No hay un usuario autenticado', 'error');
+            }
+        });
+    }
+
+    
     const businessNameInput = document.getElementById('businessNameInput');
     const businessLogoInput = document.getElementById('businessLogoInput');
     const saveBusinessBrandBtn = document.getElementById('saveBusinessBrandBtn');
@@ -3771,6 +3800,7 @@ function renderSplitUI() {
             showNotification("Error al limpiar historial", "error");
         }
     };
+
 
 
 
