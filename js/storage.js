@@ -8,7 +8,7 @@ const PREFIX = 'mineapp_';
 // Multi-tenant Firestore helper
 function getDbCollection(key) {
     const tenantId = window.currentUserTenant || 'default_tenant';
-    return getDbCollection('tenants').doc(tenantId).collection(key);
+    return db.collection('tenants').doc(tenantId).collection(key);
 }
 const STORAGE_KEYS = {
     ORDERS: PREFIX + 'orders',
@@ -452,6 +452,7 @@ StorageManager.configLoaded = false;
     StorageManager.configLoaded = true;
     window.dispatchEvent(new CustomEvent('configLoadedFromCloud')); // Kept name for compatibility
 })();
+
 
 
 
