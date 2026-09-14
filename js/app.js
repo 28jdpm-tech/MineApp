@@ -51,7 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 headerLogo.src = bLogo;
                 headerLogo.style.display = 'block';
             } else {
-                headerLogo.style.display = 'none';
+                headerLogo.src = 'assets/logo.png';
+                headerLogo.style.display = 'block';
             }
         }
         
