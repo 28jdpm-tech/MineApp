@@ -3,7 +3,7 @@
 // ============================================
 
 // Unique prefix for this specific application to prevent crossover
-const PREFIX = 'minesof_';
+const PREFIX = 'Minesof_';
 
 // Multi-tenant Firestore helper
 function getDbCollection(key) {
@@ -458,7 +458,6 @@ StorageManager.configLoaded = false;
     StorageManager.configLoaded = true;
     window.dispatchEvent(new CustomEvent('configLoadedFromCloud')); // Kept name for compatibility
 })();
-
 
 
 
