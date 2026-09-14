@@ -1189,7 +1189,7 @@ function renderSplitUI() {
 
 
 
-        showNotification(`AÃ±adiendo productos a la Orden ${order.orderNumber}`);
+        showNotification(`Añadiendo productos a la Orden ${order.orderNumber}`);
         if (typeof lucide !== 'undefined') lucide.createIcons();
     };
 
@@ -1492,7 +1492,7 @@ function renderSplitUI() {
                 if (selectedPaymentOrder.isPartial) {
                     // If it's a partial order (addition), delete it after printing
                     StorageManager.deleteOrder(selectedPaymentOrder.id);
-                    showNotification(`Ticket de adiciÃ³n impreso`);
+                    showNotification(`Ticket de adición impreso`);
                 } else {
                     // Normal order: Set as printed for checkout
                     StorageManager.updateOrder(selectedPaymentOrder.id, { checkoutPrinted: true });
@@ -1660,7 +1660,7 @@ function renderSplitUI() {
                 if (catId === 'bebidas' || catName.includes('bebida')) {
                     totalBebidas += item.price;
                     orderDrinks += item.price;
-                    flavorStats.drinks[item.flavors[0] || 'GenÃ©rica'] = (flavorStats.drinks[item.flavors[0] || 'GenÃ©rica'] || 0) + item.qty;
+                    flavorStats.drinks[item.flavors[0] || 'Genérica'] = (flavorStats.drinks[item.flavors[0] || 'Genérica'] || 0) + item.qty;
                     categorized = true;
                 } else if (catId === 'desechables' || catName.includes('desechable')) {
                     totalDesechables += item.price;
@@ -2706,7 +2706,7 @@ function renderSplitUI() {
                 statusEl.style.background = '#dcfce7';
                 statusEl.style.color = '#16a34a';
             } else if (netBalance < 0) {
-                statusEl.textContent = 'DÃ©ficit';
+                statusEl.textContent = 'Déficit';
                 statusEl.style.background = '#fee2e2';
                 statusEl.style.color = '#dc2626';
             } else {
@@ -2858,7 +2858,7 @@ function renderSplitUI() {
         // Add new category form
         html += `
             <div style="display: flex; gap: var(--space-xs); align-items: center;">
-                <input type="text" id="newExpenseCatLabel" placeholder="Nombre de categorÃ­a"
+                <input type="text" id="newExpenseCatLabel" placeholder="Nombre de categoría"
                     style="flex: 1; padding: 8px 12px; background: var(--bg-tertiary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-size: 0.85rem; box-sizing: border-box;">
                 <button onclick="window.addExpenseCategory()"
                     style="padding: 8px 14px; background: var(--accent-primary); color: var(--bg-primary); border: none; border-radius: var(--radius-md); font-weight: 700; font-size: 0.8rem; cursor: pointer; white-space: nowrap;">
@@ -2876,7 +2876,7 @@ function renderSplitUI() {
         const label = document.getElementById('newExpenseCatLabel')?.value.trim();
 
         if (!label) {
-            showNotification('âš ï¸ Ingresa un nombre para la categorÃ­a', 'error');
+            showNotification('âš ï¸ Ingresa un nombre para la categoría', 'error');
             return;
         }
 
@@ -2884,7 +2884,7 @@ function renderSplitUI() {
         const id = label.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
 
         if (cats.find(c => c.id === id)) {
-            showNotification('âš ï¸ Ya existe una categorÃ­a con ese nombre', 'error');
+            showNotification('âš ï¸ Ya existe una categoría con ese nombre', 'error');
             return;
         }
 
@@ -2899,7 +2899,7 @@ function renderSplitUI() {
         const cat = cats.find(c => c.id === catId);
         if (!cat) return;
 
-        const newLabel = prompt('Nombre de la categorÃ­a:', cat.label);
+        const newLabel = prompt('Nombre de la categoría:', cat.label);
         if (newLabel === null) return;
 
         cat.label = newLabel.trim() || cat.label;
@@ -2910,7 +2910,7 @@ function renderSplitUI() {
 
     window.deleteExpenseCategory = function (catId) {
         const performDelete = () => {
-            if (!confirm('¿Eliminar esta categorÃ­a de Gasto?')) return;
+            if (!confirm('¿Eliminar esta categoría de Gasto?')) return;
             const cats = StorageManager.getExpenseCategories().filter(c => c.id !== catId);
             StorageManager.saveExpenseCategories(cats);
             showNotification('Categoría eliminada');
@@ -2938,7 +2938,7 @@ function renderSplitUI() {
             const date = document.getElementById('expenseDate').value;
 
             if (!amount || amount <= 0) {
-                showNotification('âš ï¸ Ingresa un monto vÃ¡lido', 'error');
+                showNotification('âš ï¸ Ingresa un monto válido', 'error');
                 return;
             }
 
@@ -3341,7 +3341,7 @@ function renderSplitUI() {
             const { type, id, parentId } = adminEditContext;
             const name = document.getElementById('editName').value.trim();
             if (!name) {
-                showNotification('Ingresa un nombre vÃ¡lido', 'error');
+                showNotification('Ingresa un nombre válido', 'error');
                 return;
             }
 
@@ -3525,12 +3525,12 @@ function renderSplitUI() {
             const confirmPass = elements.confirmAdminPassword.value;
 
             if (newPass.length < 4) {
-                showNotification('La contraseÃ±a debe tener al menos 4 caracteres', 'error');
+                showNotification('La contraseña debe tener al menos 4 caracteres', 'error');
                 return;
             }
 
             if (newPass !== confirmPass) {
-                showNotification('Las contraseÃ±as no coinciden', 'error');
+                showNotification('Las contraseñas no coinciden', 'error');
                 return;
             }
 
@@ -3538,7 +3538,7 @@ function renderSplitUI() {
             config.adminPassword = newPass;
             StorageManager.saveConfig(config);
 
-            showNotification('ContraseÃ±a actualizada correctamente');
+            showNotification('Contraseña actualizada correctamente');
             elements.newAdminPassword.value = '';
             elements.confirmAdminPassword.value = '';
         });
@@ -3800,6 +3800,7 @@ function renderSplitUI() {
             showNotification("Error al limpiar historial", "error");
         }
     };
+
 
 
 

@@ -3,7 +3,7 @@
 // ============================================
 
 // Unique prefix for this specific application to prevent crossover
-const PREFIX = 'Minesof_';
+const PREFIX = 'minesof_';
 
 // Multi-tenant Firestore helper
 function getDbCollection(key) {
@@ -363,7 +363,7 @@ const StorageManager = {
     },
 
     // ============================================
-    // Expense Categories (CategorÃ­as de Egresos)
+    // Expense Categories (Categorías de Egresos)
     // ============================================
 
     getExpenseCategories() {
@@ -458,6 +458,7 @@ StorageManager.configLoaded = false;
     StorageManager.configLoaded = true;
     window.dispatchEvent(new CustomEvent('configLoadedFromCloud')); // Kept name for compatibility
 })();
+
 
 
 
