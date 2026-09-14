@@ -81,7 +81,7 @@
             e.preventDefault();
             isLoginMode = !isLoginMode;
             if (isLoginMode) {
-                authTitle.textContent = 'Bienvenido a MineApp';
+                authTitle.textContent = 'Bienvenido a Minesof';
                 btn.textContent = 'Ingresar';
                 authToggleLink.innerHTML = '&iquest;No tienes cuenta? Reg&iacute;strate aqu&iacute;';
             } else {
@@ -139,6 +139,7 @@
         });
     }
 });
+
 
 
 

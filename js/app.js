@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function updateAppBranding() {
         const config = StorageManager.getConfig();
-        const bName = config.businessName || 'MineApp';
+        const bName = config.businessName || 'Minesof';
         const bLogo = config.businessLogo || '';
         
         const headerName = document.getElementById('headerBusinessName');
@@ -2430,7 +2430,7 @@ function renderSplitUI() {
 
         let t = '';
         t += doubleLine + '\n';
-        t += center((FOODX_DATA.businessName || 'MINEAPP').toUpperCase()) + '\n';
+        t += center((FOODX_DATA.businessName || 'Minesof').toUpperCase()) + '\n';
         t += center('CAFE & RESTAURANTE') + '\n';
         t += doubleLine + '\n';
 
@@ -2510,7 +2510,7 @@ function renderSplitUI() {
 
         t += '\n';
         t += center('GRACIAS POR SU COMPRA!') + '\n';
-        t += center((FOODX_DATA.businessName || 'MINEAPP').toUpperCase()) + '\n';
+        t += center((FOODX_DATA.businessName || 'Minesof').toUpperCase()) + '\n';
         t += '\n\n.';
 
         return t;
@@ -2543,7 +2543,7 @@ function renderSplitUI() {
         let t = '';
         t += doubleLine + '\n';
         t += center('FACTURA DE VENTA') + '\n';
-        t += center((FOODX_DATA.businessName || 'MINEAPP').toUpperCase()) + '\n';
+        t += center((FOODX_DATA.businessName || 'Minesof').toUpperCase()) + '\n';
         t += center('CAFE & RESTAURANTE') + '\n';
         t += doubleLine + '\n';
 
@@ -2611,7 +2611,7 @@ function renderSplitUI() {
 
         t += '\n';
         t += center('GRACIAS POR SU VISITA!') + '\n';
-        t += center((FOODX_DATA.businessName || 'MINEAPP').toUpperCase()) + '\n';
+        t += center((FOODX_DATA.businessName || 'Minesof').toUpperCase()) + '\n';
         t += '\n\n.';
 
         return t;
@@ -3800,6 +3800,7 @@ function renderSplitUI() {
             showNotification("Error al limpiar historial", "error");
         }
     };
+
 
 
 
