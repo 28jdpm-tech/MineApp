@@ -3709,6 +3709,7 @@ function renderSplitUI() {
                         }
                         renderPosCategories();
                         renderPosProducts();
+                        updateAppBranding();
                         console.log('Config synced from cloud');
                     },
                     // Print callback (Remote print from other devices) - DISABLED
