@@ -13,6 +13,7 @@
     --accent-primary: #1e6b8a;
     --accent-primary-light: #2a8ab0;
     --accent-secondary: #4ecdc4;
+    --accent-royal: #2563eb; /* Azul Rey */
     --accent-gold: #f0c040;
 
     /* Chip Colors */
@@ -128,9 +129,9 @@ body {
 
 .brand-name {
     font-family: var(--font-heading);
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--accent-secondary);
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--accent-royal);
     letter-spacing: 0.5px;
 }
 
@@ -293,7 +294,7 @@ body {
 }
 
 .drawer-header .brand-name {
-    font-size: 1.2rem;
+    font-size: 1.6rem;
 }
 
 .close-drawer {
@@ -1334,7 +1335,7 @@ body {
 
 .kitchen-item-qty {
     font-weight: 700;
-    color: var(--accent-secondary);
+    color: var(--accent-royal);
 }
 
 .kitchen-action-btn {
@@ -1441,7 +1442,7 @@ body {
     display: flex;
     align-items: center;
     gap: var(--space-sm);
-    color: var(--accent-secondary);
+    color: var(--accent-royal);
     font-size: 0.9rem;
     margin-bottom: var(--space-md);
     font-weight: 500;
@@ -2117,7 +2118,7 @@ body {
 
 .panel-header h3 {
     font-size: 1rem;
-    color: var(--accent-secondary);
+    color: var(--accent-royal);
 }
 
 .btn-add {
@@ -2739,7 +2740,7 @@ option {
 .section-header i {
     width: 20px;
     height: 20px;
-    color: var(--accent-secondary);
+    color: var(--accent-royal);
 }
 
 .section-header h3 {
@@ -2828,7 +2829,7 @@ option {
 .stats-value {
     font-size: 0.85rem;
     font-weight: 700;
-    color: var(--accent-secondary);
+    color: var(--accent-royal);
 }
 
 .size-stats-grid {
@@ -3095,7 +3096,7 @@ option {
 .payment-method-tag {
     font-size: 0.65rem;
     font-weight: 700;
-    color: var(--accent-secondary);
+    color: var(--accent-royal);
     background: var(--bg-secondary);
     padding: 2px 6px;
     border-radius: 4px;
@@ -3569,7 +3570,7 @@ option {
     border-radius: var(--radius-full);
     background: var(--bg-secondary);
     border: 1px solid var(--border-default);
-    color: var(--accent-secondary);
+    color: var(--accent-royal);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -3644,7 +3645,7 @@ option {
 .pos-add-client-btn {
     background: var(--bg-input);
     border: 1px dashed var(--accent-secondary);
-    color: var(--accent-secondary);
+    color: var(--accent-royal);
     padding: 8px;
     border-radius: var(--radius-md);
     font-weight: 700;
@@ -3734,7 +3735,7 @@ option {
 
 .pos-cart-item-note {
     font-size: 0.75rem;
-    color: var(--accent-secondary);
+    color: var(--accent-royal);
     background: rgba(78, 205, 196, 0.1);
     padding: 2px 6px;
     border-radius: var(--radius-sm);
