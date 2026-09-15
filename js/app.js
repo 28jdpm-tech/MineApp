@@ -1,4 +1,4 @@
-// ============================================
+﻿// ============================================
 // FoodX POS PRO - Multiple Client Rows System
 // ============================================
 
@@ -3925,4 +3925,3 @@ function renderSplitUI() {
         balSelect.addEventListener('change', renderBalancePage);
     }
 
-});
