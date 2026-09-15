@@ -114,10 +114,10 @@
               if (input) {
                   if (input.type === 'password') {
                       input.type = 'text';
-                      btn.innerHTML = '<i data-lucide="eye-off" style="width: 20px; height: 20px; color: #64748b;"></i>';
+                      btn.innerHTML = '<i data-lucide="eye-off" style="width: 20px; height: 20px; color: #000000; font-weight: 600;"></i>';
                   } else {
                       input.type = 'password';
-                      btn.innerHTML = '<i data-lucide="eye" style="width: 20px; height: 20px; color: #64748b;"></i>';
+                      btn.innerHTML = '<i data-lucide="eye" style="width: 20px; height: 20px; color: #000000; font-weight: 600;"></i>';
                   }
                   if (window.lucide) {
                       window.lucide.createIcons();
