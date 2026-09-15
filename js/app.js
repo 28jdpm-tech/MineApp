@@ -1,4 +1,4 @@
-﻿// ============================================
+// ============================================
 // FoodX POS PRO - Multiple Client Rows System
 // ============================================
 
@@ -522,8 +522,8 @@ window.switchClient = function(client) {
             isActiveNow = true;
         }
         
-                // Optimistic UI update instead of full render
-        const cardEls = document.querySelectorAll(.split-card[data-id="${product.id}"]);
+        // Optimistic UI update instead of full render
+        const cardEls = document.querySelectorAll(`.split-card[data-id="${product.id}"]`);
         cardEls.forEach(el => {
             if (isActiveNow) {
                 el.classList.add('active');
