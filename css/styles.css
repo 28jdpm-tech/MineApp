@@ -4355,6 +4355,7 @@ option {
 .payment-actions > .btn-cancel,
 .payment-actions > .btn-delete-order,
 .payment-actions > .btn-print-checkout,
+.payment-actions > .btn-ready,
 .payment-actions > .btn-invoice {
     flex: 1 1 calc(50% - 6px) !important;
     min-width: calc(50% - 10px) !important;

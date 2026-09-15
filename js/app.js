@@ -1,4 +1,4 @@
-﻿// ============================================
+// ============================================
 // FoodX POS PRO - Multiple Client Rows System
 // ============================================
 
@@ -140,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
         paymentTicketContent: document.getElementById('paymentTicketContent'),
         paymentTotal: document.getElementById('paymentTotal'),
         printPaymentTicket: document.getElementById('printPaymentTicket'),
+        markReadyBtn: document.getElementById('markReadyBtn'),
         cancelPayment: document.getElementById('cancelPayment'),
         confirmPayment: document.getElementById('confirmPayment'),
         invoicePaymentTicket: document.getElementById('invoicePaymentTicket'),
@@ -1206,16 +1207,19 @@ function renderSplitUI() {
             modalTitle.textContent = 'Pedido Pagado - Detalle';
             elements.confirmPayment.style.display = 'none';
             elements.printPaymentTicket.style.display = 'flex'; // Allow re-print
+            if (elements.markReadyBtn) elements.markReadyBtn.style.display = 'none';
             if (elements.deleteOrderBtn) elements.deleteOrderBtn.style.display = 'flex';
         } else if (!order.checkoutPrinted) {
             modalTitle.textContent = 'Pedido Pendiente';
             elements.confirmPayment.style.display = 'none';
             elements.printPaymentTicket.style.display = 'flex';
+            if (elements.markReadyBtn) elements.markReadyBtn.style.display = 'flex';
             if (elements.deleteOrderBtn) elements.deleteOrderBtn.style.display = 'flex';
         } else {
             modalTitle.textContent = 'Cobrar Pedido';
             elements.confirmPayment.style.display = 'flex';
             elements.printPaymentTicket.style.display = 'flex'; // Allow re-print even if in pending
+            if (elements.markReadyBtn) elements.markReadyBtn.style.display = 'none';
             if (elements.deleteOrderBtn) elements.deleteOrderBtn.style.display = 'flex';
         }
 
@@ -1496,7 +1500,23 @@ function renderSplitUI() {
                     showNotification(`Pedido ${selectedPaymentOrder.orderNumber} enviado a cobrar`);
                 }
 
-                // Refresh and close
+                                // Refresh and close
+                elements.paymentModal.classList.add('hidden');
+                renderCheckoutPage();
+            }
+        });
+    }
+
+    if (elements.markReadyBtn) {
+        elements.markReadyBtn.addEventListener('click', () => {
+            if (selectedPaymentOrder) {
+                if (selectedPaymentOrder.isPartial) {
+                    StorageManager.deleteOrder(selectedPaymentOrder.id);
+                    showNotification('Adición procesada');
+                } else {
+                    StorageManager.updateOrder(selectedPaymentOrder.id, { checkoutPrinted: true });
+                    showNotification('Pedido ' + selectedPaymentOrder.orderNumber + ' marcado como listo');
+                }
                 elements.paymentModal.classList.add('hidden');
                 renderCheckoutPage();
             }
