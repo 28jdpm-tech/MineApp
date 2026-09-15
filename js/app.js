@@ -47,8 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         headerNames.forEach(el => el.textContent = bName);
         headerLogos.forEach(el => {
-            el.src = bLogo ? bLogo : 'assets/logo.png';
-            el.style.display = 'block';
+            if (bLogo) {
+                el.src = bLogo;
+                el.style.display = 'block';
+            } else {
+                el.style.display = 'none';
+            }
         });
         
         if (businessNameInput) businessNameInput.value = bName;
