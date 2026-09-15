@@ -375,17 +375,7 @@ const StorageManager = {
     getExpenseCategories() {
         const data = localStorage.getItem(STORAGE_KEYS.EXPENSE_CATEGORIES);
         if (data) return JSON.parse(data);
-                // Default categories
-        return [
-            { id: 'nomina', label: 'Nómina', emoji: '👩‍🍳' },
-            { id: 'materia_prima', label: 'Materia Prima', emoji: '🥩' },
-            { id: 'arriendo', label: 'Arriendo', emoji: '🏠' },
-            { id: 'suministros', label: 'Suministros', emoji: '📦' },
-            { id: 'bebidas', label: 'Bebidas', emoji: '🥤' },
-            { id: 'servicios', label: 'Servicios Públicos', emoji: '💡' },
-            { id: 'transporte', label: 'Transporte', emoji: '🛵' },
-            { id: 'otros', label: 'Otros', emoji: '📌' }
-        ];
+                return [];
     },
 
     saveExpenseCategories(categories) {

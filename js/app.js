@@ -2887,7 +2887,7 @@ function renderSplitUI() {
         cats.push({ id, label, emoji: '📌' });
         StorageManager.saveExpenseCategories(cats);
         showNotification(`Categoría "${label}" creada`);
-        renderExpensesPage();
+        renderExpenseCategoriesManager();
     };
 
     window.editExpenseCategory = function (catId) {
@@ -2901,7 +2901,7 @@ function renderSplitUI() {
         cat.label = newLabel.trim() || cat.label;
         StorageManager.saveExpenseCategories(cats);
         showNotification(`Categoría actualizada: ${cat.label}`);
-        renderExpensesPage();
+        renderExpenseCategoriesManager();
     };
 
     window.deleteExpenseCategory = function (catId) {
@@ -2910,7 +2910,7 @@ function renderSplitUI() {
             const cats = StorageManager.getExpenseCategories().filter(c => c.id !== catId);
             StorageManager.saveExpenseCategories(cats);
             showNotification('Categoría eliminada');
-            renderExpensesPage();
+            renderExpenseCategoriesManager();
         };
 
         if (state.isAdminAuthenticated) {
