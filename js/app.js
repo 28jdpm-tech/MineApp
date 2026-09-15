@@ -1,4 +1,4 @@
-﻿// ============================================
+// ============================================
 // FoodX POS PRO - Multiple Client Rows System
 // ============================================
 
@@ -646,6 +646,15 @@ function renderSplitUI() {
     const remaining = Object.keys(groups);
     if (remaining.length > 0) {
         html += renderColumn('otros', 'Otros');
+    }
+
+    if (html === '') {
+        html = `
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; color: #94a3b8; text-align: center; padding: 40px;">
+            <i data-lucide="package-open" style="width: 64px; height: 64px; margin-bottom: 16px; opacity: 0.5;"></i>
+            <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 8px;">¡Todo listo para empezar!</h3>
+            <p style="font-size: 0.95rem; max-width: 300px;">Aún no tienes el menú configurado. Crea tus categorías y productos en la opción <b style="color: var(--accent-primary);">Administrador</b>.</p>
+        </div>`;
     }
 
     container.innerHTML = html;
@@ -2299,6 +2308,17 @@ function renderSplitUI() {
         if (!container) return;
         const labels = { pending: 'Pendiente', preparing: 'Preparando', ready: 'Listo', delivered: 'Entregado' };
 
+        if (orders.length === 0) {
+            container.innerHTML = `
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; color: #94a3b8; text-align: center;">
+                <i data-lucide="receipt" style="width: 64px; height: 64px; margin-bottom: 16px; opacity: 0.5;"></i>
+                <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 8px;">Aún no hay ventas</h3>
+                <p style="font-size: 0.9rem; max-width: 250px;">Las ventas pagadas aparecerán aquí para que lleves tu historial.</p>
+            </div>`;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            return;
+        }
+
         container.innerHTML = orders.map(order => `
             <div class="order-list-card history-order-card" data-order-id="${order.id}">
                 <div class="order-card-header">
@@ -3170,26 +3190,42 @@ function renderSplitUI() {
         if (!elements.adminCategoriesList) return;
         const config = StorageManager.getConfig();
         const allProducts = config.products || [];
+
+        if (categories.length === 0) {
+            elements.adminCategoriesList.innerHTML = `
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; color: #94a3b8; text-align: center;">
+                <i data-lucide="layers" style="width: 64px; height: 64px; margin-bottom: 16px; opacity: 0.5;"></i>
+                <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 8px;">Aún no hay menú</h3>
+                <p style="font-size: 0.9rem; max-width: 250px;">Comienza creando tu primera categoría con el botón "+ Categoría".</p>
+            </div>`;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            return;
+        }
         
         elements.adminCategoriesList.innerHTML = categories.map(cat => {
             const catProducts = allProducts.filter(p => p.category === cat.id);
             
-            const productsHtml = catProducts.map(f => `
-                <div class="admin-item" style="background: rgba(0,0,0,0.03); margin-bottom: 5px; border-radius: 4px; border-left: 3px solid var(--accent-royal);">
-                    <div class="admin-item-info">
-                        <span style="font-size: 0.95rem;">${f.name}</span>
-                        <span style="font-weight: 700; color: var(--accent-gold); font-size: 0.9rem;">${formatPrice(f.price || 0)}</span>
+            let productsHtml = '';
+            if (catProducts.length === 0) {
+                productsHtml = `<div style="padding: 20px; text-align: center; color: #94a3b8; font-size: 0.85rem;"><i data-lucide="package-x" style="width: 24px; height: 24px; margin-bottom: 8px; opacity: 0.6;"></i><br>No hay productos en esta categoría</div>`;
+            } else {
+                productsHtml = catProducts.map(f => `
+                    <div class="admin-item" style="background: rgba(0,0,0,0.03); margin-bottom: 5px; border-radius: 4px; border-left: 3px solid var(--accent-royal);">
+                        <div class="admin-item-info">
+                            <span style="font-size: 0.95rem;">${f.name}</span>
+                            <span style="font-weight: 700; color: var(--accent-gold); font-size: 0.9rem;">${formatPrice(f.price || 0)}</span>
+                        </div>
+                        <div class="admin-item-actions">
+                            <button class="btn-icon" onclick="window.editAdminItem('flavor', '${f.id}', '${cat.id}')">
+                                <i data-lucide="edit-2" style="width: 16px; height: 16px;"></i>
+                            </button>
+                            <button class="btn-icon delete-btn" onclick="window.deleteAdminItem('flavor', '${f.id}', '${cat.id}')">
+                                <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="admin-item-actions">
-                        <button class="btn-icon" onclick="window.editAdminItem('flavor', '${f.id}', '${cat.id}')">
-                            <i data-lucide="edit-2" style="width: 16px; height: 16px;"></i>
-                        </button>
-                        <button class="btn-icon delete-btn" onclick="window.deleteAdminItem('flavor', '${f.id}', '${cat.id}')">
-                            <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
 
             return `
             <div class="admin-category-card" style="background: var(--bg-card); padding: 15px; border-radius: 8px; border: 1px solid var(--border-subtle); margin-bottom: 20px;">
