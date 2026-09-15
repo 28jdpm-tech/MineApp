@@ -7,8 +7,16 @@
     appId: "1:763912479718:web:e4c341e81943afc0b9ec27"
 };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+let db;
 
-window.auth = firebase.auth();
-
+try {
+    if (typeof firebase !== 'undefined') {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+        window.auth = firebase.auth();
+    } else {
+        console.warn("Firebase no est disponible. Operando en modo offline local.");
+    }
+} catch (e) {
+    console.error("Error al inicializar Firebase:", e);
+}
