@@ -1,4 +1,24 @@
 ﻿document.addEventListener('DOMContentLoaded', () => {
+    const mapAuthError = (code) => {
+    switch (code) {
+        case 'auth/user-not-found':
+        case 'auth/invalid-credential':
+        case 'auth/wrong-password':
+            return 'Correo o contraseña incorrectos. Verifica que el usuario exista.';
+        case 'auth/invalid-email':
+            return 'El formato del correo electrónico no es válido.';
+        case 'auth/too-many-requests':
+            return 'Demasiados intentos fallidos. Por favor, intenta de nuevo más tarde.';
+        case 'auth/email-already-in-use':
+            return 'El correo electrónico ya está registrado en otra cuenta.';
+        case 'auth/weak-password':
+            return 'La contraseña es muy débil (mínimo 6 caracteres).';
+        case 'auth/network-request-failed':
+            return 'Error de conexión a internet.';
+        default:
+            return 'Ocurrió un error: ' + code;
+    }
+};
     const loginOverlay = document.getElementById('loginOverlay');
     const loginForm = document.getElementById('loginForm');
     const loginEmail = document.getElementById('loginEmail');
@@ -49,7 +69,7 @@
                     document.getElementById('loginPassword').value = '';
                 })
                 .catch((error) => {
-                    alert('Error al recuperar contrase\u00f1a: ' + error.message);
+                    alert('Error: ' + mapAuthError(error.code));
                 });
         });
     }
@@ -92,7 +112,7 @@
                     loginForm.reset();
                 })
                 .catch((error) => {
-                    loginError.textContent = 'Error: ' + error.message;
+                    loginError.textContent = mapAuthError(error.code);
                     loginError.style.display = 'block';
                     btn.textContent = 'Ingresar';
                     btn.disabled = false;
@@ -105,7 +125,7 @@
                     loginForm.reset();
                 })
                 .catch((error) => {
-                    loginError.textContent = 'Error: ' + error.message;
+                    loginError.textContent = mapAuthError(error.code);
                     loginError.style.display = 'block';
                     btn.textContent = 'Registrarse';
                     btn.disabled = false;
