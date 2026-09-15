@@ -3954,13 +3954,7 @@ function renderSplitUI() {
             dayOrders.forEach(o => {
                 tSales += o.totalPrice;
             });
-            sHtml = `
-                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2.5rem 1rem; background: var(--bg-card); border-radius: var(--radius-md); margin-top: 10px; border: 1px solid var(--border-subtle);">
-                    <i data-lucide="trending-up" style="width: 32px; height: 32px; color: var(--accent-primary); margin-bottom: 12px; opacity: 0.8;"></i>
-                    <span style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Total Ingresos</span>
-                    <span style="font-size: 2.2rem; font-weight: 800; color: var(--accent-primary); margin-top: 4px;">${formatPrice(tSales)}</span>
-                </div>
-            `;
+            sHtml = ''; // The total is already shown in the header, no need for extra box
         }
 
         const allExpenses = StorageManager.getExpenses();
