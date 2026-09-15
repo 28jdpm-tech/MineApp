@@ -4483,4 +4483,3 @@ option {
     height: calc(100vh - var(--header-height) - var(--footer-height));
     overflow: hidden;
 }
-.form-group input::placeholder { color: #333333; font-weight: 500; opacity: 1; }
