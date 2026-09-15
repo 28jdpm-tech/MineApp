@@ -446,6 +446,10 @@ const StorageManager = {
     // Clear all data (for testing)
     clearAll() {
         Object.values(STORAGE_KEYS).forEach(key => localStorage.removeItem(key));
+        localStorage.removeItem(PREFIX + 'businessName');
+        localStorage.removeItem(PREFIX + 'businessLogo');
+        localStorage.removeItem('galeria_admin_password');
+        localStorage.removeItem('galeria_observations');
     }
 };
 
