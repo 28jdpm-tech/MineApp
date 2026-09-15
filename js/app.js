@@ -42,19 +42,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const bName = config.businessName || 'Minesof';
         const bLogo = config.businessLogo || '';
         
-        const headerName = document.getElementById('headerBusinessName');
-        const headerLogo = document.getElementById('headerBusinessLogo');
+        const headerNames = document.querySelectorAll('.dynamic-business-name');
+        const headerLogos = document.querySelectorAll('.dynamic-business-logo');
         
-        if (headerName) headerName.textContent = bName;
-        if (headerLogo) {
-            if (bLogo) {
-                headerLogo.src = bLogo;
-                headerLogo.style.display = 'block';
-            } else {
-                headerLogo.src = 'assets/logo.png';
-                headerLogo.style.display = 'block';
-            }
-        }
+        headerNames.forEach(el => el.textContent = bName);
+        headerLogos.forEach(el => {
+            el.src = bLogo ? bLogo : 'assets/logo.png';
+            el.style.display = 'block';
+        });
         
         if (businessNameInput) businessNameInput.value = bName;
         if (businessLogoInput) businessLogoInput.value = bLogo;
