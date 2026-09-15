@@ -55,6 +55,8 @@
 
         
     const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+    const confirmPasswordGroup = document.getElementById('confirmPasswordGroup');
+    const loginConfirmPassword = document.getElementById('loginConfirmPassword');
     if (forgotPasswordLink) {
         forgotPasswordLink.addEventListener('click', (e) => {
             e.preventDefault();
@@ -89,12 +91,15 @@
                 btn.textContent = 'Ingresar';
                 authToggleLink.innerHTML = '&iquest;No tienes cuenta? Reg&iacute;strate aqu&iacute;';
                 if (forgotPasswordLink && forgotPasswordLink.parentElement) forgotPasswordLink.parentElement.style.display = 'block';
+                if (confirmPasswordGroup) confirmPasswordGroup.style.display = 'none';
+                if (loginConfirmPassword) loginConfirmPassword.value = '';
             } else {
                 authTitle.textContent = 'Crear Nueva Cuenta';
                 if(authSubtitle) authSubtitle.textContent = 'Crea una cuenta para empezar a usar el sistema';
                 btn.textContent = 'Registrarse';
                 authToggleLink.innerHTML = '&iquest;Ya tienes cuenta? Inicia Sesi&oacute;n';
                 if (forgotPasswordLink && forgotPasswordLink.parentElement) forgotPasswordLink.parentElement.style.display = 'none';
+                if (confirmPasswordGroup) confirmPasswordGroup.style.display = 'block';
             }
         });
     }
@@ -109,6 +114,16 @@
         btn.textContent = 'Procesando...';
         btn.disabled = true;
 
+                if (!isLoginMode) {
+            const confirmPass = loginConfirmPassword ? loginConfirmPassword.value : '';
+            if (password !== confirmPass) {
+                loginError.textContent = 'Las contrase\u00f1as no coinciden.';
+                loginError.style.display = 'block';
+                btn.textContent = 'Registrarse';
+                btn.disabled = false;
+                return;
+            }
+        }
         if (isLoginMode) {
             window.auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
