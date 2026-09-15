@@ -104,7 +104,28 @@
         });
     }
 
-    // Login Submit
+          // Toggle Password Visibility
+      document.querySelectorAll('.toggle-password').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+              e.preventDefault();
+              const targetId = btn.getAttribute('data-target');
+              const input = document.getElementById(targetId);
+              
+              if (input) {
+                  if (input.type === 'password') {
+                      input.type = 'text';
+                      btn.innerHTML = '<i data-lucide="eye-off" style="width: 20px; height: 20px; color: #64748b;"></i>';
+                  } else {
+                      input.type = 'password';
+                      btn.innerHTML = '<i data-lucide="eye" style="width: 20px; height: 20px; color: #64748b;"></i>';
+                  }
+                  if (window.lucide) {
+                      window.lucide.createIcons();
+                  }
+              }
+          });
+      });
+      // Login Submit
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const email = loginEmail.value.trim();
