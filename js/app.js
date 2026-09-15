@@ -1013,7 +1013,7 @@ function renderSplitUI() {
         Object.keys(lists).forEach(mode => {
             if (lists[mode]) {
                 if (mode === checkoutMode) {
-                    lists[mode].classList.add('open');
+                    lists[mode].classList.remove('hidden');
                 } else {
                     lists[mode].classList.add('hidden');
                 }
@@ -1252,7 +1252,7 @@ function renderSplitUI() {
         }
 
         if (typeof lucide !== 'undefined') lucide.createIcons();
-        elements.paymentModal.classList.add('open');
+        elements.paymentModal.classList.remove('hidden');
     }
 
 
@@ -2076,14 +2076,14 @@ function renderSplitUI() {
             const val = e.target.value;
             // Handle date picker visibility
             if (val === 'date') {
-                elements.reportDatePickerGroup?.classList.add('open');
+                elements.reportDatePickerGroup?.classList.remove('hidden');
             } else {
                 elements.reportDatePickerGroup?.classList.add('hidden');
             }
 
             // Handle month picker visibility
             if (val === 'specific-month') {
-                elements.reportMonthPickerGroup?.classList.add('open');
+                elements.reportMonthPickerGroup?.classList.remove('hidden');
             } else {
                 elements.reportMonthPickerGroup?.classList.add('hidden');
             }
@@ -2130,11 +2130,11 @@ function renderSplitUI() {
             elements.historyOrderModal.classList.add('hidden');
             elements.historyOrderModal.style.display = 'none';
         }
-        elements.historyOrdersList.classList.add('open');
+        elements.historyOrdersList.classList.remove('hidden');
 
         // Show/Hide date picker container
         if (historyMode === 'date') {
-            elements.datePickerContainer.classList.add('open');
+            elements.datePickerContainer.classList.remove('hidden');
         } else {
             elements.datePickerContainer.classList.add('hidden');
         }
@@ -2205,7 +2205,7 @@ function renderSplitUI() {
         selectedHistoryOrder = order;
         elements.historyTicketContent.innerHTML = generateTicketText(order);
 
-        elements.historyOrderModal.classList.add('open');
+        elements.historyOrderModal.classList.remove('hidden');
         elements.historyOrderModal.style.display = 'flex';
     }
 
@@ -2933,7 +2933,7 @@ function renderSplitUI() {
             const val = e.target.value;
             const picker = document.getElementById('expenseMonthPicker');
             if (val === 'specific-month') {
-                picker?.classList.add('open');
+                picker?.classList.remove('hidden');
             } else {
                 picker?.classList.add('hidden');
                 renderExpensesPage();
