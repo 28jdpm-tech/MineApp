@@ -601,12 +601,16 @@
                     <h2>Balance General</h2>
                 </div>
                 <div style="padding: 1rem;">
-                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                        <select id="balancePeriodSelect" class="form-input" style="flex: 1;">
-                            <option value="today">Hoy</option>
-                            <option value="month">Este Mes</option>
-                            <option value="total">Histórico Total</option>
-                        </select>
+                    <!-- Balance Filter -->
+                    <div class="reports-filter" style="margin-bottom: 20px;">
+                        <div class="filter-group">
+                            <label><i data-lucide="calendar" style="width: 16px; height: 16px; margin-right: 4px; display: inline-block; vertical-align: middle;"></i> Periodo de Balance:</label>
+                            <select id="balancePeriodSelect" class="date-picker-input" style="width: 100%; max-width: 300px;">
+                                <option value="today">Hoy</option>
+                                <option value="month">Este Mes</option>
+                                <option value="total">Histórico Total</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div style="overflow-x: auto; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: var(--bg-card);">
