@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -398,7 +398,551 @@
                         <span class="summary-label">DAVIPLATA</span>
                         <span class="summary-value" id="historyTotalDaviplata">$0</span>
                     </div>
-                    </script>
+                    <!-- Categories (can also be filters) -->
+                </div>
+
+                <!-- History Orders List -->
+                <div class="history-orders-list" id="historyOrdersList">
+                    <!-- Orders will be rendered here -->
+                </div>
+
+                <!-- Order Detail Modal -->
+                <div class="modal history-order-modal hidden" id="historyOrderModal">
+                    <div class="modal-overlay" id="historyModalOverlay"></div>
+                    <div class="history-order-detail" id="historyOrderDetail">
+                        <div class="detail-header">
+                            <div class="header-left">
+                                <button class="back-btn" id="backToHistoryBtn">
+                                    <i data-lucide="arrow-left"></i>
+                                    Cerrar
+                                </button>
+                            </div>
+                            <div class="header-actions">
+                                <button class="reprint-btn" id="reprintOrderBtn">
+                                    <i data-lucide="printer"></i>
+                                    Imprimir
+                                </button>
+                                <button class="btn-invoice" id="invoiceOrderBtn" style="height: 36px; padding: 0 12px; font-size: 0.8rem; width: auto;">
+                                    <i data-lucide="receipt"></i>
+                                    Factura
+                                </button>
+                                <button class="btn-delete-order" id="deleteOrderBtnHistory">
+                                    <i data-lucide="trash-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="detail-ticket">
+                            <pre class="ticket-content" id="historyTicketContent"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Page -->
+            <div class="page" id="page-reports">
+                <div class="page-title-bar">
+                    <h2>Reportes de Ventas</h2>
+                </div>
+
+                <!-- Reports Filter -->
+                <div class="reports-filter">
+                    <div class="filter-group">
+                        <label>Reporte por:</label>
+                        <select id="reportPeriodSelect" class="date-picker-input">
+                            <option value="today">Hoy</option>
+                            <option value="date">Día Específico</option>
+                            <option value="month">Mes Actual</option>
+                            <option value="specific-month">Mes Específico</option>
+                            <option value="total">Histórico Total</option>
+                        </select>
+                    </div>
+                    <div class="filter-group hidden" id="reportDatePickerGroup">
+                        <input type="date" id="reportDatePicker" class="date-picker-input">
+                    </div>
+                    <div class="filter-group hidden" id="reportMonthPickerGroup">
+                        <input type="month" id="reportMonthPicker" class="date-picker-input">
+                    </div>
+                    <button class="search-date-btn" id="searchReportBtn">
+                        <i data-lucide="search"></i>
+                        Consultar
+                    </button>
+                </div>
+
+                <div class="reports-grid">
+                    <div class="report-stat-card">
+                        <div class="stat-icon sales"><i data-lucide="dollar-sign"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Ventas Periodo</span>
+                            <span class="stat-value" id="reportDailySales">$0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Methods Section in Reports -->
+                <div class="reports-grid" style="margin-top: var(--space-md);">
+                    <div class="report-stat-card report-clickable" data-report-filter="efectivo">
+                        <div class="stat-icon"
+                            style="background: rgba(110, 231, 183, 0.1); color: var(--accent-primary);"><i
+                                data-lucide="banknote"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Efectivo</span>
+                            <span class="stat-value" id="reportEfectivoSales">$0</span>
+                        </div>
+                    </div>
+                    <div class="report-stat-card report-clickable" data-report-filter="nequi">
+                        <div class="stat-icon" style="background: rgba(96, 165, 250, 0.1); color: #60a5fa;"><i
+                                data-lucide="smartphone"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Nequi</span>
+                            <span class="stat-value" id="reportNequiSales">$0</span>
+                        </div>
+                    </div>
+                    <div class="report-stat-card report-clickable" data-report-filter="daviplata">
+                        <div class="stat-icon" style="background: rgba(251, 146, 60, 0.1); color: #fb923c;"><i
+                                data-lucide="credit-card"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Daviplata</span>
+                            <span class="stat-value" id="reportDaviplataSales">$0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Report Detail Modal -->
+                <div class="modal hidden" id="reportDetailModal" style="z-index: 10001;">
+                    <div class="modal-overlay" id="closeReportDetailModalOverlay"></div>
+                    <div class="modal-content" style="max-width: 450px;">
+                        <div class="modal-header">
+                            <h3 id="reportDetailTitle">Detalle de Pagos</h3>
+                            <button class="modal-close" id="closeReportDetailModal">
+                                <i data-lucide="x"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="padding: 0;">
+                            <div class="report-detail-list" id="reportDetailList">
+                                <!-- Table populated via JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sales Breakdown Table (Requested by User) -->
+                <div class="report-details-full"
+                    style="padding: 0 var(--space-md) var(--space-md); margin-top: var(--space-lg);">
+                    <div class="report-section"
+                        style="background: var(--bg-secondary); border-radius: var(--radius-lg); padding: var(--space-md); border: 1px solid var(--border-subtle);">
+                        <div class="section-header"
+                            style="margin-bottom: var(--space-md); border-bottom: 2px solid var(--accent-primary);">
+                            <i data-lucide="list" style="color: var(--accent-primary);"></i>
+                            <h3 style="flex: 1;">Reporte de Ventas</h3>
+                            <button id="downloadReportBtn"
+                                style="background: none; border: none; color: var(--accent-primary); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 4px; margin-right: 8px;"
+                                title="Descargar Excel">
+                                <i data-lucide="file-spreadsheet"></i>
+                            </button>
+                            <span id="reportSalesTotal"
+                                style="font-weight: 800; color: var(--accent-primary);">$0</span>
+                        </div>
+                        <div id="salesBreakdownTable"></div>
+                    </div>
+                </div>
+
+                <!-- Payment Details Tables (Requested by User) -->
+                <div class="report-details-full"
+                    style="padding: 0 var(--space-md) var(--space-md); margin-top: var(--space-lg);">
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-md);">
+
+                        <!-- Efectivo Table -->
+                        <div class="report-section"
+                            style="background: var(--bg-secondary); border-radius: var(--radius-lg); padding: var(--space-md); border: 1px solid var(--border-subtle);">
+                            <div class="section-header"
+                                style="margin-bottom: var(--space-md); border-bottom: 2px solid #16a34a;">
+                                <i data-lucide="banknote" style="color: #16a34a;"></i>
+                                <h3 style="flex: 1;">Detalle Efectivo</h3>
+                                <span id="reportEfectivoSalesTotal" style="font-weight: 800; color: #16a34a;">$0</span>
+                            </div>
+                            <div id="paymentTableEfectivo"></div>
+                        </div>
+
+                        <!-- Nequi Table -->
+                        <div class="report-section"
+                            style="background: var(--bg-secondary); border-radius: var(--radius-lg); padding: var(--space-md); border: 1px solid var(--border-subtle);">
+                            <div class="section-header"
+                                style="margin-bottom: var(--space-md); border-bottom: 2px solid #60a5fa;">
+                                <i data-lucide="smartphone" style="color: #60a5fa;"></i>
+                                <h3 style="flex: 1;">Detalle Nequi</h3>
+                                <span id="reportNequiSalesTotal" style="font-weight: 800; color: #60a5fa;">$0</span>
+                            </div>
+                            <div id="paymentTableNequi"></div>
+                        </div>
+
+                        <!-- Daviplata Table -->
+                        <div class="report-section"
+                            style="background: var(--bg-secondary); border-radius: var(--radius-lg); padding: var(--space-md); border: 1px solid var(--border-subtle);">
+                            <div class="section-header"
+                                style="margin-bottom: var(--space-md); border-bottom: 2px solid #fb923c;">
+                                <i data-lucide="credit-card" style="color: #fb923c;"></i>
+                                <h3 style="flex: 1;">Detalle Daviplata</h3>
+                                <span id="reportDaviplataSalesTotal" style="font-weight: 800; color: #fb923c;">$0</span>
+                            </div>
+                            <div id="paymentTableDaviplata"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expenses (Gastos) Page -->
+            <div class="page" id="page-expenses">
+                <div class="page-title-bar">
+                    <h2>Gastos / Costos</h2>
+                </div>
+
+                <!-- Expense Form -->
+                <div class="expense-form-container" style="padding: var(--space-md);">
+                    <div class="expense-form"
+                        style="background: var(--bg-secondary); border-radius: var(--radius-lg); padding: var(--space-lg); border: 1px solid var(--border-subtle);">
+                        <div
+                            style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-sm); gap: 12px;">
+                            <h3
+                                style="color: var(--text-primary); font-size: 1rem; display: flex; align-items: center; gap: 8px; margin: 0;">
+                                <i data-lucide="plus-circle"
+                                    style="width: 20px; height: 20px; color: var(--accent-primary);"></i>
+                                Registrar Gasto
+                            </h3>
+                            <input type="date" id="expenseDate"
+                                style="width: auto; padding: 6px 10px; background: var(--bg-tertiary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-size: 0.8rem; box-sizing: border-box;">
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm);">
+                            <div style="grid-column: 1 / -1;">
+                                <label
+                                    style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; display: block;">Categoría</label>
+                                <select id="expenseCategory"
+                                    style="width: 100%; padding: 10px 12px; background: var(--bg-tertiary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-size: 0.9rem;">
+                                    <!-- Populated dynamically from admin categories -->
+                                </select>
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label
+                                    style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; display: block;">Descripción</label>
+                                <input type="text" id="expenseDescription"
+                                    placeholder="Ej: Compra de pan, pago de luz..."
+                                    style="width: 100%; padding: 10px 12px; background: var(--bg-tertiary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-size: 0.9rem; box-sizing: border-box;">
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <div style="display: flex; flex-direction: column; gap: 4px;">
+                                    <label
+                                        style="font-size: 0.75rem; color: var(--text-muted); display: block;">Cantidad</label>
+                                    <input type="number" id="expenseQty" placeholder="1"
+                                        style="width: 100%; padding: 10px 12px; background: var(--bg-tertiary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-size: 0.9rem; box-sizing: border-box;">
+                                </div>
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                    <label style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">Precio/Costo ($)</label>
+                                    <span id="expenseAmountPreview"
+                                        style="font-size: 0.9rem; font-weight: 800; color: var(--accent-primary);">$0</span>
+                                </div>
+                                <input type="number" id="expenseAmount" placeholder="0"
+                                    style="width: 100%; padding: 12px; background: var(--bg-tertiary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-size: 1.1rem; font-weight: 700; box-sizing: border-box;">
+                            </div>
+                        </div>
+                        <button id="addExpenseBtn"
+                            style="margin-top: var(--space-md); width: 100%; padding: 12px; background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; border-radius: var(--radius-md); font-weight: 700; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <i data-lucide="minus-circle" style="width: 18px; height: 18px;"></i>
+                            Registrar Gasto
+                        </button>
+                    </div>
+                </div>
+
+                <div style="padding: 0 var(--space-md); margin-bottom: var(--space-sm);">
+                    <div style="display: flex; gap: var(--space-sm); align-items: center;">
+                        <select id="expensePeriodSelect"
+                            style="flex: 1; padding: 10px 12px; background: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-size: 0.85rem;">
+                            <option value="today">Hoy</option>
+                            <option value="month">Este Mes</option>
+                            <option value="specific-month">Mes Específico</option>
+                            <option value="total">Todo</option>
+                        </select>
+                        <input type="month" id="expenseMonthPicker" class="hidden"
+                            style="flex: 1; padding: 10px 12px; background: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-size: 0.85rem;">
+                    </div>
+                </div>
+
+                                <!-- Expense Summary Cards -->
+                <div style="padding: 0 var(--space-md); margin-bottom: var(--space-md);">
+                    <div style="display: grid; grid-template-columns: 1fr; gap: var(--space-sm);">
+                        <div
+                            style="background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); border-radius: var(--radius-lg); padding: var(--space-md);">
+                            <div
+                                style="font-size: 0.7rem; color: rgba(255,255,255,0.8); font-weight: 600; text-transform: uppercase;">
+                                Total Gastos</div>
+                            <div id="expenseTotalAmount" style="font-size: 1.5rem; font-weight: 800; color: white;">$0
+                            </div>
+                        </div>
+                    </div>
+                    <div id="expenseCategorySummary"
+                        style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); margin-top: var(--space-sm);">
+                    </div>
+                </div>
+
+                <div style="padding: 0 var(--space-md) var(--space-md);">
+                    <div
+                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-sm);">
+                        <h3 style="color: var(--text-primary); font-size: 0.9rem; margin: 0;">Registro de Gastos</h3>
+                        <button onclick="window.downloadExpensesExcel()"
+                            style="background: none; border: none; color: var(--accent-primary); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 4px;"
+                            title="Descargar Excel Gastos">
+                            <i data-lucide="file-spreadsheet"></i>
+                        </button>
+                    </div>
+
+                    <!-- Description Search -->
+                    <div style="margin-bottom: var(--space-sm); position: relative;">
+                        <input type="text" id="expenseSearchInput" placeholder="Buscar descripción..."
+                            style="width: 100%; padding: 8px 12px 8px 32px; background: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-size: 0.85rem; box-sizing: border-box;">
+                        <i data-lucide="search"
+                            style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; color: var(--text-muted);"></i>
+                    </div>
+
+                    <div id="expensesList" style="display: flex; flex-direction: column; gap: var(--space-xs);"></div>
+                </div>
+            </div>
+
+            <!-- Admin Page -->
+            <div class="page" id="page-admin">
+                <div class="page-title-bar">
+                    <h2>Administración del Sistema</h2>
+                </div>
+
+                <div class="admin-tabs">
+                    <button class="admin-tab active" data-tab="categories">Cat&aacute;logo</button>
+                    
+                    <button class="admin-tab" data-tab="expense-cats">Gastos</button>
+                    <button class="admin-tab" data-tab="security">Ajustes</button>
+                </div>
+
+                <div class="admin-content">
+                    <!-- Categories Panel -->
+                    <div class="admin-panel active" id="panel-categories">
+                        <div class="panel-header">
+                            <h3>Gestionar Categorías</h3>
+                            <button class="btn-add" id="addCategoryBtn">
+                                <i data-lucide="plus"></i> Nueva Categoría
+                            </button>
+                        </div>
+                        <div class="admin-list" id="adminCategoriesList"></div>
+                    </div>
+
+                    <!-- Expense Categories Panel -->
+                    <div class="admin-panel" id="panel-expense-cats">
+                        <div class="panel-header">
+                            <h3>Categorías de Gastos</h3>
+                        </div>
+                        <div id="expenseCatManager"></div>
+                    </div>
+
+                    <!-- Security Panel -->
+                    <div class="admin-panel" id="panel-security">
+                                                <div class="panel-header">
+                            <h3>Ajustes del Negocio</h3>
+                        </div>
+                        
+                        <div class="security-card" style="margin-bottom: 20px;">
+                            <h4><i data-lucide="briefcase"></i> Identidad del Negocio</h4>
+                            <div class="form-group">
+                                <label>Nombre del Negocio</label>
+                                <input type="text" id="businessNameInput" class="config-input" placeholder="Ej: Pizzer&iacute;a Juan" style="width:100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                            </div>
+
+                            <button class="btn-primary" id="saveBusinessBrandBtn" style="margin-top: 15px; width: 100%; padding: 12px; border-radius: 8px; background: #2563eb; color: white; border: none; font-weight: bold; cursor: pointer;">Guardar Identidad</button>
+                        </div>
+                        <div class="security-card">
+                            <h4><i data-lucide="shield-check"></i> Cambiar Contrase&ntilde;a de Administrador</h4>
+                            <div class="form-group">
+                                <label>Nueva Contrase&ntilde;a</label>
+                                <input type="password" id="newAdminPassword" placeholder="M&iacute;nimo 4 caracteres">
+                            </div>
+                            <div class="form-group">
+                                <label>Confirmar Contrase&ntilde;a</label>
+                                <input type="password" id="confirmAdminPassword" placeholder="Repite la Contrase&ntilde;a">
+                            </div>
+                            <button class="btn-pay" id="saveAdminPasswordBtn"
+                                style="width: 100%; margin-top: var(--space-md);">
+                                <i data-lucide="save"></i> Actualizar Contrase&ntilde;a
+                            </button>
+                            <p
+                                style="font-size: 0.75rem; color: var(--text-muted); margin-top: var(--space-md); text-align: center;">
+                                <i data-lucide="info" style="width: 12px; height: 12px; vertical-align: middle;"></i>
+                                La nueva Contrase&ntilde;a se sincronizar&aacute; con todos los dispositivos.
+                            </p>
+                        </div>
+
+                        <!-- Reset Order Counter Section -->
+                        <div class="security-card"
+                            style="margin-top: var(--space-lg); border: 2px solid var(--warning-color, #f59e0b);">
+                            <h4><i data-lucide="refresh-cw"></i> Reiniciar Contador de Pedidos</h4>
+                            <p
+                                style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: var(--space-md);">
+                                Reinicia el contador de pedidos a #001. &Uacute;til para pruebas o inicio de jornada.
+                            </p>
+                            <div
+                                style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-md);">
+                                <span style="font-size: 0.9rem;">Contador actual:</span>
+                                <span id="currentOrderCounter"
+                                    style="font-weight: 700; font-size: 1.1rem; color: var(--accent-primary);">#---</span>
+                            </div>
+                            <button class="btn-add" id="resetOrderCounterBtn"
+                                style="width: 100%; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; border: none;">
+                                <i data-lucide="rotate-ccw"></i> Reiniciar a #001
+                            </button>
+                            <p
+                                style="font-size: 0.75rem; color: var(--text-muted); margin-top: var(--space-md); text-align: center;">
+                                <i data-lucide="alert-triangle"
+                                    style="width: 12px; height: 12px; vertical-align: middle; color: #f59e0b;"></i>
+                                Esta acci&oacute;n se sincroniza en todos los dispositivos.
+                            </p>
+                                                <div class="security-card" style="margin-top: var(--space-xl); border: 1px solid var(--accent-danger);">
+                            <h4><i data-lucide="alert-triangle" style="color: var(--accent-danger);"></i> Limpiar Datos del Sistema</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: var(--space-md);">Esta acci&oacute;n eliminar&aacute; todos los pedidos, ventas, reportes y gastos registrados en el historial. No afectar&aacute; a la configuraci&oacute;n, categor&iacute;as, productos ni adicionales.</p>
+                            <button class="btn-delete" onclick="window.clearSystemData()" style="width: 100%;">
+                                <i data-lucide="trash-2"></i> Borrar Todo el Historial
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generic Admin Modal -->
+            <div class="modal" id="adminModal">
+                <div class="modal-overlay"></div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 id="adminModalTitle">Editar Elemento</h3>
+                        <button class="close-modal" id="closeAdminModal">&times;</button>
+                    </div>
+                    <div class="modal-body" id="adminModalBody">
+                        <!-- Form fields generated by JS -->
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn-cancel" id="cancelAdminModal">Cancelar</button>
+                        <button class="btn-confirm" id="confirmAdminModal">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item Note Modal -->
+            <div class="modal" id="itemNoteModal">
+                <div class="modal-overlay" id="closeItemNoteOverlay"></div>
+                <div class="modal-content" style="max-width: 360px;">
+                    <div class="modal-header">
+                        <h3 id="itemNoteModalTitle">Nota / Observación</h3>
+                        <button class="close-modal" id="closeItemNoteModal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="itemNoteModalProductName" style="font-size: 0.9rem; font-weight: 700; color: var(--accent-royal); margin-bottom: 8px;"></p>
+                        <textarea id="itemNoteModalInput" placeholder="Ej: Sin azúcar, bien caliente, porción doble..." style="width: 100%; height: 75px; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-default); background: var(--bg-input); color: var(--text-primary); font-family: inherit; resize: none;"></textarea>
+                        <div id="itemNoteQuickTags" style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px;"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn-cancel" id="cancelItemNoteModal">Cancelar</button>
+                        <button class="btn-confirm" id="saveItemNoteModal">Guardar Nota</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer Actions -->
+        <footer class="app-footer" id="appFooter">
+            <button class="send-kitchen-btn" id="sendToKitchenBtn">
+                <i data-lucide="send"></i>
+                <span>GENERAR</span>
+            </button>
+            <div class="total-display">
+                <span class="total-label">TOTAL VENTA</span>
+                <span class="total-amount" id="totalAmount">$0</span>
+            </div>
+        </footer>
+
+        <!-- Client Info Modal (only for adding to order) -->
+        <div class="modal" id="clientModal">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="clientModalTitle">Mesa / Cliente</h3>
+                    <button class="modal-close" id="closeClientModal">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="clientInput" placeholder="Número de mesa o nombre" class="modal-input"
+                        autofocus>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-cancel" id="cancelClientModal">Cancelar</button>
+                    <button class="btn-confirm" id="confirmClientModal">Agregar</button>
+                </div>
+            </div>
+        </div>
+        <!-- Ticket Modal -->
+        <div class="modal" id="ticketModal">
+            <div class="modal-overlay" id="closeTicketModal"></div>
+            <div class="modal-content" style="max-width: 320px;">
+                <div class="modal-header">
+                    <h3>Confirmar Pedido</h3>
+                    <button class="close-modal" id="cancelTicket">&times;</button>
+                </div>
+                <div class="modal-body" style="padding: 0;">
+                    <div class="ticket-container" style="background: white; padding: var(--space-md);">
+                        <pre class="ticket-content" id="ticketContent"
+                            style="font-family: 'Courier New', Courier, monospace; font-size: 11px; white-space: pre; color: black;"></pre>
+                    </div>
+                </div>
+                <div class="modal-footer"
+                    style="flex-direction: column; gap: var(--space-md); padding: var(--space-lg);">
+                    <button class="btn-confirm" id="confirmTicket"
+                        style="width: 100%; height: 50px; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i data-lucide="send"></i> GENERAR
+                    </button>
+                    <button class="btn-cancel" id="cancelTicketFooter"
+                        style="width: 100%; height: 45px; font-size: 0.9rem; margin-top: 4px;">
+                        Volver a Corregir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div> <!-- Final de app-container -->
+
+    <!-- Admin Login Modal -->
+    <div class="modal" id="adminLoginModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content" style="max-width: 320px;">
+            <div class="modal-header">
+                <h3>Acceso Restringido</h3>
+                <button class="close-modal" id="closeAdminLoginModal" onclick="forceCloseLogin()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: var(--space-xl) var(--space-lg);">
+                <div style="text-align: center; margin-bottom: var(--space-lg);">
+                    <div
+                        style="width: 60px; height: 60px; background: rgba(245, 158, 11, 0.1); color: var(--status-pending); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-sm);">
+                        <i data-lucide="lock" style="width: 30px; height: 30px;"></i>
+                    </div>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary);">Ingresa la Contrase&ntilde;a de administrador
+                    </p>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="adminPasswordInput" placeholder="Contrase&ntilde;a"
+                        style="text-align: center; font-size: 1.2rem; letter-spacing: 4px;" autofocus>
+                </div>
+                <button class="btn-confirm" id="confirmAdminLogin" onclick="forceLogin()" style="width: 100%; height: 48px; font-size: 1rem;">
+                    Entrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 
         <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
