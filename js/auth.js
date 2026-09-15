@@ -34,9 +34,11 @@
                             if (typeof renderExpensesList === 'function') renderExpensesList();
                         },
                         () => { 
+                            if (typeof renderPosCategories === 'function') renderPosCategories();
                             if (typeof renderPosProducts === 'function') renderPosProducts();
                             if (typeof renderPosCart === 'function') renderPosCart();
                             if (typeof updateAppBranding === 'function') updateAppBranding();
+                            if (typeof renderAdminPage === 'function') renderAdminPage();
                         },
                         (order) => { 
                             if(typeof showNotification === 'function') showNotification('Pedido sincronizado'); 

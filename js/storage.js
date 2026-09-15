@@ -220,7 +220,7 @@ const StorageManager = {
     async syncConfigToCloud(config) {
         if (typeof db === 'undefined') return;
         try {
-            await getDbCollection(STORAGE_KEYS.SETTINGS).doc('global_config').set(config, { merge: true });
+            await getDbCollection(STORAGE_KEYS.SETTINGS).doc('global_config').set(config);
         } catch (e) {
             console.error('Error syncing config:', e);
         }
