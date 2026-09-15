@@ -522,14 +522,16 @@ window.switchClient = function(client) {
             isActiveNow = true;
         }
         
-        // Optimistic UI update instead of full render
-        const cardEls = document.querySelectorAll(`.split-card[data-id="${product.id}"]`);
+                // Optimistic UI update instead of full render
+        const cardEls = document.querySelectorAll(.split-card[data-id="${product.id}"]);
         cardEls.forEach(el => {
             if (isActiveNow) {
                 el.classList.add('active');
             } else {
                 el.classList.remove('active');
             }
+            const checkIcon = el.querySelector('.check-icon');
+            if (checkIcon) checkIcon.style.display = isActiveNow ? 'flex' : 'none';
         });
         
         renderPosCart();
