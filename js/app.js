@@ -1,4 +1,4 @@
-﻿// ============================================
+// ============================================
 // FoodX POS PRO - Multiple Client Rows System
 // ============================================
 
@@ -3166,13 +3166,13 @@ function renderSplitUI() {
         });
     });
 
-        window.openAddProductModal = function(catId) {
+    window.openAddProductModal = function(catId) {
         adminEditContext = { type: 'flavor', id: null, parentId: catId };
         elements.adminModalTitle.textContent = 'Nuevo Producto';
-        elements.adminModalBody.innerHTML = 
+        elements.adminModalBody.innerHTML = `
             <div class="form-group"><label>Nombre del Producto</label><input type="text" id="editName" placeholder="Ej: Croissant de Almendras"></div>
             <div class="form-group"><label>Precio Unitario ($)</label><input type="number" id="editPrice" placeholder="4500" value="0"></div>
-        ;
+        `;
         elements.adminModal.classList.add('open');
     };
 
@@ -3184,47 +3184,47 @@ function renderSplitUI() {
         elements.adminCategoriesList.innerHTML = categories.map(cat => {
             const catProducts = allProducts.filter(p => p.category === cat.id);
             
-            const productsHtml = catProducts.map(f => 
+            const productsHtml = catProducts.map(f => `
                 <div class="admin-item" style="background: rgba(0,0,0,0.03); margin-bottom: 5px; border-radius: 4px; border-left: 3px solid var(--accent-royal);">
                     <div class="admin-item-info">
-                        <span style="font-size: 0.95rem;"> + f.name + </span>
-                        <span style="font-weight: 700; color: var(--accent-gold); font-size: 0.9rem;"> + formatPrice(f.price || 0) + </span>
+                        <span style="font-size: 0.95rem;">${f.name}</span>
+                        <span style="font-weight: 700; color: var(--accent-gold); font-size: 0.9rem;">${formatPrice(f.price || 0)}</span>
                     </div>
                     <div class="admin-item-actions">
-                        <button class="btn-icon" onclick="window.editAdminItem('flavor', ' + f.id + ', ' + cat.id + ')">
+                        <button class="btn-icon" onclick="window.editAdminItem('flavor', '${f.id}', '${cat.id}')">
                             <i data-lucide="edit-2" style="width: 16px; height: 16px;"></i>
                         </button>
-                        <button class="btn-icon delete-btn" onclick="window.deleteAdminItem('flavor', ' + f.id + ', ' + cat.id + ')">
+                        <button class="btn-icon delete-btn" onclick="window.deleteAdminItem('flavor', '${f.id}', '${cat.id}')">
                             <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
                         </button>
                     </div>
                 </div>
-            ).join('');
+            `).join('');
 
-            return 
+            return `
             <div class="admin-category-card" style="background: var(--bg-card); padding: 15px; border-radius: 8px; border: 1px solid var(--border-subtle); margin-bottom: 20px;">
                 <div class="admin-item" style="border: none; padding: 0; background: transparent; margin-bottom: 10px;">
                     <div class="admin-item-info">
-                        <span style="font-size: 1.1rem; font-weight: 800; color: var(--accent-primary);"> + cat.name + </span>
+                        <span style="font-size: 1.1rem; font-weight: 800; color: var(--accent-primary);">${cat.name}</span>
                     </div>
                     <div class="admin-item-actions">
-                        <button class="btn-icon" onclick="window.editAdminItem('category', ' + cat.id + ')">
+                        <button class="btn-icon" onclick="window.editAdminItem('category', '${cat.id}')">
                             <i data-lucide="edit-2"></i>
                         </button>
-                        <button class="btn-icon delete-btn" onclick="window.deleteAdminItem('category', ' + cat.id + ')">
+                        <button class="btn-icon delete-btn" onclick="window.deleteAdminItem('category', '${cat.id}')">
                             <i data-lucide="trash-2"></i>
                         </button>
                     </div>
                 </div>
                 
                 <div class="admin-products-list" style="margin-top: 10px; display: flex; flex-direction: column; gap: 5px;">
-                     + productsHtml + 
-                    <button class="btn-add-inline" onclick="window.openAddProductModal(' + cat.id + ')" style="margin-top: 10px; padding: 8px; font-size: 0.9rem; width: 100%; border: 1px dashed var(--accent-royal); color: var(--accent-royal); background: transparent; border-radius: 8px; cursor: pointer;">
-                        <i data-lucide="plus" style="width: 16px; height: 16px;"></i> Agregar Producto a  + cat.name + 
+                    ${productsHtml}
+                    <button class="btn-add-inline" onclick="window.openAddProductModal('${cat.id}')" style="margin-top: 10px; padding: 8px; font-size: 0.9rem; width: 100%; border: 1px dashed var(--accent-royal); color: var(--accent-royal); background: transparent; border-radius: 8px; cursor: pointer;">
+                        <i data-lucide="plus" style="width: 16px; height: 16px;"></i> Agregar Producto a ${cat.name}
                     </button>
                 </div>
             </div>
-            ;
+            `;
         }).join('');
         
         if (typeof lucide !== 'undefined') lucide.createIcons();
