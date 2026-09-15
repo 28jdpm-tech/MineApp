@@ -3,6 +3,7 @@
     switch (code) {
         case 'auth/user-not-found':
         case 'auth/invalid-credential':
+        case 'auth/invalid-login-credentials':
         case 'auth/wrong-password':
             return 'Correo o contraseña incorrectos. Verifica que el usuario exista.';
         case 'auth/invalid-email':
