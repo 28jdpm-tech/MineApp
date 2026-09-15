@@ -1,4 +1,4 @@
-﻿// ============================================
+// ============================================
 // FoodX POS PRO - Multiple Client Rows System
 // ============================================
 
@@ -3953,14 +3953,14 @@ function renderSplitUI() {
         } else {
             dayOrders.forEach(o => {
                 tSales += o.totalPrice;
-                const time = new Date(o.createdAt).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
-                sHtml += `
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 4px;">
-                        <span><span style="color: var(--text-muted); font-size: 0.75rem;">${time}</span> - Pedido #${o.orderNumber}</span>
-                        <span style="font-weight: 600;">${formatPrice(o.totalPrice)}</span>
-                    </div>
-                `;
             });
+            sHtml = `
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2.5rem 1rem; background: var(--bg-card); border-radius: var(--radius-md); margin-top: 10px; border: 1px solid var(--border-subtle);">
+                    <i data-lucide="trending-up" style="width: 32px; height: 32px; color: var(--accent-primary); margin-bottom: 12px; opacity: 0.8;"></i>
+                    <span style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Total Ingresos</span>
+                    <span style="font-size: 2.2rem; font-weight: 800; color: var(--accent-primary); margin-top: 4px;">${formatPrice(tSales)}</span>
+                </div>
+            `;
         }
 
         const allExpenses = StorageManager.getExpenses();
