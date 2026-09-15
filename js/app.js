@@ -611,7 +611,7 @@ function renderSplitUI() {
         else if (nameLower.includes('postre')) catIcon = '🍰';
         else catIcon = '📌';
 
-        let colHtml = `<div class="category-col" style="flex: 1; min-width: 17ch; max-width: 22ch; display: flex; flex-direction: column; gap: 12px; max-height: 100%; min-height: 0; 
+        let colHtml = `<div class="category-col-wrapper" style="height: 100%; display: flex; flex-direction: column; min-width: 17ch; max-width: 22ch;"><div class="category-col" style="flex: 0 1 auto; display: flex; flex-direction: column; gap: 12px; max-height: 100%; min-height: 0; 
             background: ${colors.bg}; border: 1px solid ${colors.border}; border-radius: 16px; padding: 10px;
             --active-check: ${colors.main}; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
             
@@ -644,7 +644,7 @@ function renderSplitUI() {
             }).join('');
         }
         
-        colHtml += `</div></div>`;
+        colHtml += `</div></div></div>`;
         return colHtml;
     };
 
