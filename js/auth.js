@@ -88,11 +88,13 @@
                 if(authSubtitle) authSubtitle.textContent = 'Inicia sesión para acceder a tu sistema';
                 btn.textContent = 'Ingresar';
                 authToggleLink.innerHTML = '&iquest;No tienes cuenta? Reg&iacute;strate aqu&iacute;';
+                if (forgotPasswordLink && forgotPasswordLink.parentElement) forgotPasswordLink.parentElement.style.display = 'block';
             } else {
                 authTitle.textContent = 'Crear Nueva Cuenta';
                 if(authSubtitle) authSubtitle.textContent = 'Crea una cuenta para empezar a usar el sistema';
                 btn.textContent = 'Registrarse';
                 authToggleLink.innerHTML = '&iquest;Ya tienes cuenta? Inicia Sesi&oacute;n';
+                if (forgotPasswordLink && forgotPasswordLink.parentElement) forgotPasswordLink.parentElement.style.display = 'none';
             }
         });
     }
