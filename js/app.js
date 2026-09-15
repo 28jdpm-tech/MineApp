@@ -1,4 +1,4 @@
-// ============================================
+﻿// ============================================
 // FoodX POS PRO - Multiple Client Rows System
 // ============================================
 
@@ -611,7 +611,7 @@ function renderSplitUI() {
         else if (nameLower.includes('postre')) catIcon = '🍰';
         else catIcon = '📌';
 
-        let colHtml = `<div class="category-col" style="flex: 1; min-width: 17ch; max-width: 22ch; display: flex; flex-direction: column; gap: 12px; height: 100%; 
+        let colHtml = `<div class="category-col" style="flex: 1; min-width: 17ch; max-width: 22ch; display: flex; flex-direction: column; gap: 12px; height: 100%; min-height: 0; 
             background: ${colors.bg}; border: 1px solid ${colors.border}; border-radius: 16px; padding: 10px;
             --active-check: ${colors.main}; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
             
@@ -627,7 +627,7 @@ function renderSplitUI() {
                 </div>
             </div>
             
-            <div class="category-col-content" id="col-content-${catId}" style="display: flex; flex-direction: column; gap: 8px; overflow-y: auto; flex: 1; padding-bottom: 20px; padding-right: 4px; scrollbar-width: none;">`;
+            <div class="category-col-content" id="col-content-${catId}" style="display: flex; flex-direction: column; gap: 8px; overflow-y: auto; flex: 1; min-height: 0; padding-bottom: 20px; padding-right: 4px; scrollbar-width: none;">`;
         
         if (items.length === 0) {
             colHtml += `<div style="text-align: center; padding: 20px; color: #94a3b8; font-size: 0.85rem;">No hay productos</div>`;

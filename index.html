@@ -118,7 +118,7 @@
         <!-- Main Content -->
         <main class="main-content">
             <!-- New Order Page (Multi-Sector POS) -->
-            <div class="page active" id="page-new-order">
+            <div class="page active" id="page-new-order" style="padding: 0; height: calc(100vh - var(--header-height) - var(--footer-height)); overflow: hidden; display: flex; flex-direction: column;">
                                                 <div class="pos-workspace pos-workspace-split" id="posWorkspace">
                                                                                                     <!-- Top Header: Floating Curved Boxes -->
                     <div style="padding: 15px 10px 0 10px; display: flex; flex-direction: column; gap: 12px; background: transparent;">
@@ -139,7 +139,7 @@
                     </div>
 
                     <!-- Body: Dynamic Categories -->
-                    <div class="pos-dynamic-body" id="dynamicCategoriesContainer" style="padding: 15px 10px; display: flex; flex-direction: row; gap: 20px; overflow-x: auto; overflow-y: hidden; flex: 1; background: var(--bg-primary);">
+                    <div class="pos-dynamic-body" id="dynamicCategoriesContainer" style="padding: 15px 10px; display: flex; flex-direction: row; gap: 20px; overflow-x: auto; overflow-y: hidden; flex: 1; min-height: 0; min-width: 0; background: var(--bg-primary);">
                         <!-- Dynamic Categories Rendered Here -->
                     </div>
 
