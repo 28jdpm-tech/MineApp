@@ -36,6 +36,7 @@
                         () => { 
                             if (typeof renderPosProducts === 'function') renderPosProducts();
                             if (typeof renderPosCart === 'function') renderPosCart();
+                            if (typeof updateAppBranding === 'function') updateAppBranding();
                         },
                         (order) => { 
                             if(typeof showNotification === 'function') showNotification('Pedido sincronizado'); 

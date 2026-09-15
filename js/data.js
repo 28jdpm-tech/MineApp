@@ -3,7 +3,7 @@
 // ============================================
 
 const FOODX_DATA = {
-    businessName: 'GALERÍA AYC',
+    businessName: 'Minesof',
     businessSubtitle: 'SISTEMA POS PRO',
 
     // Multi-sector Categories
