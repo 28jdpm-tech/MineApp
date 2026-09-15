@@ -4475,3 +4475,11 @@ option {
     font-size: 0.9rem;
     text-align: center;
 }
+
+#page-new-order.active {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    height: calc(100vh - var(--header-height) - var(--footer-height));
+    overflow: hidden;
+}
