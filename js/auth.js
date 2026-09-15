@@ -22,30 +22,9 @@
             // MULTI-TENANT: Set the global tenant ID to the user's UID
             window.currentUserTenant = user.uid;
             
-            // Reload the configuration and initialize cloud sync for this specific tenant
+            // Reload the configuration for this specific tenant
             const config = StorageManager.getConfig();
             Object.assign(FOODX_DATA, config);
-            if (typeof renderPosCart === 'function') {
-                try {
-                    StorageManager.initCloudSync(
-                        () => { 
-                            if (typeof renderCheckoutPage === 'function') renderCheckoutPage();
-                            if (typeof renderOrdersPage === 'function') renderOrdersPage();
-                            if (typeof renderExpensesList === 'function') renderExpensesList();
-                        },
-                        () => { 
-                            if (typeof renderPosCategories === 'function') renderPosCategories();
-                            if (typeof renderPosProducts === 'function') renderPosProducts();
-                            if (typeof renderPosCart === 'function') renderPosCart();
-                            if (typeof updateAppBranding === 'function') updateAppBranding();
-                            if (typeof renderAdminPage === 'function') renderAdminPage();
-                        },
-                        (order) => { 
-                            if(typeof showNotification === 'function') showNotification('Pedido sincronizado'); 
-                        }
-                    );
-                } catch(e) {}
-            }
         } else {
             // User is signed out
             loginOverlay.style.display = 'flex';

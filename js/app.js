@@ -3699,32 +3699,38 @@ function renderSplitUI() {
         }, 2500);
     }
 
-    /* Initialize Cloud Sync moved to auth.js to guarantee correct tenant
-    if (typeof StorageManager.initCloudSync === 'function') {
-        StorageManager.initCloudSync(
-            // Orders & Expenses callback
-            () => {
-                if (state.currentPage === 'checkout') renderCheckoutPage();
-                if (state.currentPage === 'history') renderHistoryPage();
-                if (state.currentPage === 'new-order') if(typeof updateOrderTotal === "function") updateOrderTotal(); else renderPosCart();
-    
-                if (state.currentPage === 'expenses') renderExpensesPage();
-            },
-            // Config callback (Admin changes from other devices)
-            () => {
-                if (state.currentPage === 'admin') renderAdminPage();
-                if (state.currentPage === 'expenses') renderExpensesPage();
-                if (state.currentPage === 'new-order') {
-                    initializeCategories();
-                    if(typeof updateOrderTotal === "function") updateOrderTotal(); else renderPosCart();
-    
-                }
-                console.log('Config synced from cloud');
-            },
-            // Print callback (Remote print from other devices) - DISABLED
-            null
-        );
-    }*/
+    // Initialize Cloud Sync (wait for auth to guarantee correct tenant)
+    if (window.auth) {
+        window.auth.onAuthStateChanged((user) => {
+            if (user && typeof StorageManager.initCloudSync === 'function') {
+                StorageManager.initCloudSync(
+                    // Orders & Expenses callback
+                    () => {
+                        if (state.currentPage === 'checkout') renderCheckoutPage();
+                        if (state.currentPage === 'history') renderHistoryPage();
+                        if (state.currentPage === 'new-order') {
+                            if(typeof updateOrderTotal === "function") updateOrderTotal(); else renderPosCart();
+                        }
+                        if (state.currentPage === 'expenses') renderExpensesPage();
+                    },
+                    // Config callback (Admin changes from other devices)
+                    () => {
+                        if (state.currentPage === 'admin') renderAdminPage();
+                        if (state.currentPage === 'expenses') renderExpensesPage();
+                        if (state.currentPage === 'new-order') {
+                            initializeCategories();
+                            if(typeof updateOrderTotal === "function") updateOrderTotal(); else renderPosCart();
+                        }
+                        renderPosCategories();
+                        renderPosProducts();
+                        console.log('Config synced from cloud');
+                    },
+                    // Print callback (Remote print from other devices) - DISABLED
+                    null
+                );
+            }
+        });
+    }
 
     // Initialize
     renderPosCategories();
