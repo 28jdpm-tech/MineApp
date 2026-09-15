@@ -34,32 +34,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     
     const businessNameInput = document.getElementById('businessNameInput');
-    const businessLogoInput = document.getElementById('businessLogoInput');
     const saveBusinessBrandBtn = document.getElementById('saveBusinessBrandBtn');
     
     function updateAppBranding() {
         const config = StorageManager.getConfig();
         const bName = config.businessName || 'Minesof';
-        const bLogo = config.businessLogo || '';
         
         const headerNames = document.querySelectorAll('.dynamic-business-name');
-        const headerLogos = document.querySelectorAll('.dynamic-business-logo');
-        
         headerNames.forEach(el => el.textContent = bName);
-        headerLogos.forEach(el => {
-            el.src = bLogo ? bLogo : 'assets/logo.png';
-            el.style.display = 'block';
-        });
         
         if (businessNameInput) businessNameInput.value = bName;
-        if (businessLogoInput) businessLogoInput.value = bLogo;
     }
     
     if (saveBusinessBrandBtn) {
         saveBusinessBrandBtn.addEventListener('click', () => {
             const config = StorageManager.getConfig();
             config.businessName = businessNameInput.value.trim();
-            config.businessLogo = businessLogoInput.value.trim();
             StorageManager.saveConfig(config);
             updateAppBranding();
             showNotification('Identidad guardada');
