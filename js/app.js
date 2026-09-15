@@ -1,4 +1,4 @@
-﻿// ============================================
+// ============================================
 // FoodX POS PRO - Multiple Client Rows System
 // ============================================
 
@@ -1622,19 +1622,17 @@ function renderSplitUI() {
         const paidOrders = orders.filter(o => o.paid);
 
         const totalSales = paidOrders.reduce((sum, o) => sum + o.totalPrice, 0);
-        let totalFood = 0;
-        let totalBebidas = 0;
-        let totalDesechables = 0;
+        
         let totalEfectivo = 0;
         let totalNequi = 0;
         let totalDaviplata = 0;
 
-        const foodCategories = ['hamburguesas', 'perros', 'salchipapas', 'combos'];
+        
 
         // Metrics Maps
         const categorySales = {};
         const categoryQtyStats = {}; // { cat: { total: 0, sizes: {} } }
-        const flavorStats = { food: {}, drinks: {}, disposables: {} };
+        const flavorStats = { all: {} };
         const sizeCounts = { 'XS': 0, 'XM': 0, 'XL': 0, 'X': 0, 'HB': 0, 'PE': 0, 'SA': 0 };
         const extrasSales = {};
         const paymentList = { efectivo: [], nequi: [], daviplata: [] };
@@ -1651,30 +1649,9 @@ function renderSplitUI() {
                 const catId = (item.category || '').toLowerCase();
                 const catName = (item.categoryName || '').toLowerCase();
 
-                let categorized = false;
-                if (catId === 'bebidas' || catName.includes('bebida')) {
-                    totalBebidas += item.price;
-                    orderDrinks += item.price;
-                    flavorStats.drinks[item.flavors[0] || 'Genérica'] = (flavorStats.drinks[item.flavors[0] || 'Genérica'] || 0) + item.qty;
-                    categorized = true;
-                } else if (catId === 'desechables' || catName.includes('desechable')) {
-                    totalDesechables += item.price;
-                    orderDisposables += item.price;
-                    (item.flavors || []).forEach(f => {
-                        if (f) flavorStats.disposables[f] = (flavorStats.disposables[f] || 0) + item.qty;
-                    });
-                    categorized = true;
-                } else if (foodCategories.includes(catId) || foodCategories.some(f => catName.includes(f.substring(0, 4)))) {
-                    totalFood += item.price;
-                    orderFood += item.price;
-                    (item.flavors || []).forEach(f => {
-                        if (f) flavorStats.food[f] = (flavorStats.food[f] || 0) + item.qty;
-                    });
-                    categorized = true;
-                } else {
-                    orderOthers += item.price;
-                }
-
+                                (item.flavors || []).forEach(f => {
+                    if(f) flavorStats.all[f] = (flavorStats.all[f] || 0) + item.qty;
+                });
                 // Category Sales breakdown
                 const displayCatName = item.categoryName || 'Otros';
                 categorySales[displayCatName] = (categorySales[displayCatName] || 0) + item.price;
@@ -1745,9 +1722,9 @@ function renderSplitUI() {
 
         // Update top cards
         if (elements.reportDailySales) elements.reportDailySales.textContent = formatPrice(totalSales);
-        if (elements.reportFoodSales) elements.reportFoodSales.textContent = formatPrice(totalFood);
-        if (elements.reportBebidasSales) elements.reportBebidasSales.textContent = formatPrice(totalBebidas);
-        if (elements.reportDesechablesSales) elements.reportDesechablesSales.textContent = formatPrice(totalDesechables);
+        
+        
+        
         if (elements.reportEfectivoSales) elements.reportEfectivoSales.textContent = formatPrice(totalEfectivo);
         if (elements.reportNequiSales) elements.reportNequiSales.textContent = formatPrice(totalNequi);
         if (elements.reportDaviplataSales) elements.reportDaviplataSales.textContent = formatPrice(totalDaviplata);
@@ -1800,24 +1777,15 @@ function renderSplitUI() {
         if (elements.flavorSalesList) {
             let flavorsHtml = '';
 
-            const groupConfig = [
-                { key: 'food', label: 'Comida', icon: 'utensils' },
-                { key: 'drinks', label: 'Bebidas', icon: 'cup-water' },
-                { key: 'disposables', label: 'Desechables', icon: 'package' }
-            ];
-
-            groupConfig.forEach(group => {
-                const entries = Object.entries(flavorStats[group.key]).sort((a, b) => b[1] - a[1]);
-                if (entries.length > 0) {
-                    flavorsHtml += `<div class="report-sub-section-title">${group.label}</div>`;
-                    flavorsHtml += entries.map(([name, count]) => `
-                        <div class="stats-row">
-                            <span class="stats-label">${name}</span>
-                            <span class="stats-value">${count} ud.</span>
-                        </div>
-                    `).join('');
-                }
-            });
+            const entries = Object.entries(flavorStats.all || {}).sort((a, b) => b[1] - a[1]);
+            if (entries.length > 0) {
+                flavorsHtml += entries.map(([name, count]) => `
+                    <div class="stats-row">
+                        <span class="stats-label">${name}</span>
+                        <span class="stats-value">${count} ud.</span>
+                    </div>
+                `).join('');
+            }
 
             elements.flavorSalesList.innerHTML = flavorsHtml || '<div class="empty-state">Sin datos</div>';
         }
@@ -1865,10 +1833,10 @@ function renderSplitUI() {
                             <thead>
                                 <tr style="background: var(--bg-tertiary);">
                                     <th style="padding: 10px 12px; text-align: left; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.65rem;">Fecha</th>
-                                    <th style="padding: 10px 12px; text-align: right; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.65rem;">Comida</th>
-                                    <th style="padding: 10px 12px; text-align: right; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.65rem;">Bebidas</th>
-                                    <th style="padding: 10px 12px; text-align: right; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.65rem;">Desechables</th>
-                                    <th style="padding: 10px 12px; text-align: right; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.65rem;">Otros</th>
+                                    
+                                    
+                                    
+                                    
                                     <th style="padding: 10px 12px; text-align: right; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.65rem;">Total</th>
                                 </tr>
                             </thead>
@@ -1883,10 +1851,10 @@ function renderSplitUI() {
                         html += `
                             <tr style="border-top: 1px solid var(--border-subtle); background: var(--bg-secondary);">
                                 <td style="padding: 10px 12px; color: var(--text-primary); font-weight: 600;">${displayDate}</td>
-                                <td style="padding: 10px 12px; text-align: right; color: var(--text-primary);">${formatPrice(s.food)}</td>
-                                <td style="padding: 10px 12px; text-align: right; color: var(--text-primary);">${formatPrice(s.drinks)}</td>
-                                <td style="padding: 10px 12px; text-align: right; color: var(--text-primary);">${formatPrice(s.desechables)}</td>
-                                <td style="padding: 10px 12px; text-align: right; color: var(--text-muted); font-style: italic;">${formatPrice(s.otros)}</td>
+                                
+                                
+                                
+                                
                                 <td style="padding: 10px 12px; text-align: right; font-weight: 800; color: var(--accent-primary);">${formatPrice(s.total)}</td>
                             </tr>
                         `;
@@ -1990,10 +1958,7 @@ function renderSplitUI() {
             const s = lastSalesBreakdown[date];
             return {
                 "Fecha": date,
-                "Comida": s.food,
-                "Bebidas": s.drinks,
-                "Desechables": s.desechables,
-                "Otros": s.otros,
+                
                 "Total": s.total
             };
         });
@@ -2001,10 +1966,7 @@ function renderSplitUI() {
         // Add a Footer row with totals
         const totals = {
             "Fecha": "TOTALES",
-            "Comida": days.reduce((sum, d) => sum + lastSalesBreakdown[d].food, 0),
-            "Bebidas": days.reduce((sum, d) => sum + lastSalesBreakdown[d].drinks, 0),
-            "Desechables": days.reduce((sum, d) => sum + lastSalesBreakdown[d].desechables, 0),
-            "Otros": days.reduce((sum, d) => sum + lastSalesBreakdown[d].otros, 0),
+            
             "Total": days.reduce((sum, d) => sum + lastSalesBreakdown[d].total, 0)
         };
         data.push(totals);
@@ -2154,17 +2116,6 @@ function renderSplitUI() {
                     if (m === historyFilter) return true;
                     if (m === 'combinado' && o.paymentDetails && (o.paymentDetails[historyFilter] || 0) > 0) return true;
                     return false;
-                });
-            } else if (['comida', 'bebidas', 'desechables'].includes(historyFilter)) {
-                const foodCategories = ['hamburguesas', 'perros', 'salchipapas', 'combos'];
-                orders = orders.filter(o => {
-                    return o.items.some(item => {
-                        const catId = (item.category || '').toLowerCase();
-                        if (historyFilter === 'comida') return foodCategories.includes(catId);
-                        if (historyFilter === 'bebidas') return catId === 'bebidas';
-                        if (historyFilter === 'desechables') return catId === 'desechables';
-                        return false;
-                    });
                 });
             }
         }
@@ -2364,11 +2315,9 @@ function renderSplitUI() {
         let totalEfectivo = 0;
         let totalNequi = 0;
         let totalDaviplata = 0;
-        let totalFood = 0;
-        let totalBebidas = 0;
-        let totalDesechables = 0;
+        
 
-        const foodCategories = ['hamburguesas', 'perros', 'salchipapas', 'combos'];
+        
 
         paidOrders.forEach(order => {
             totalSales += order.totalPrice;
@@ -2386,28 +2335,15 @@ function renderSplitUI() {
                 totalEfectivo += order.totalPrice;
             }
 
-            // Category Breakdown
-            order.items.forEach(item => {
-                const catId = (item.category || '').toLowerCase();
-                const catName = (item.categoryName || '').toLowerCase();
-
-                if (catId === 'bebidas' || catName.includes('bebida')) {
-                    totalBebidas += item.price;
-                } else if (catId === 'desechables' || catName.includes('desechable')) {
-                    totalDesechables += item.price;
-                } else if (foodCategories.includes(catId) || foodCategories.some(f => catName.includes(f.substring(0, 4)))) {
-                    totalFood += item.price;
-                }
             });
-        });
 
         if (elements.historyTotalSales) elements.historyTotalSales.textContent = formatPrice(totalSales);
         if (elements.historyTotalEfectivo) elements.historyTotalEfectivo.textContent = formatPrice(totalEfectivo);
         if (elements.historyTotalNequi) elements.historyTotalNequi.textContent = formatPrice(totalNequi);
         if (elements.historyTotalDaviplata) elements.historyTotalDaviplata.textContent = formatPrice(totalDaviplata);
-        if (elements.historyTotalFood) elements.historyTotalFood.textContent = formatPrice(totalFood);
-        if (elements.historyTotalBebidas) elements.historyTotalBebidas.textContent = formatPrice(totalBebidas);
-        if (elements.historyTotalDesechables) elements.historyTotalDesechables.textContent = formatPrice(totalDesechables);
+        
+        
+        
     }
 
         function generateTicketText(order) {
