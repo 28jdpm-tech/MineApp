@@ -244,14 +244,20 @@ const StorageManager = {
         }
     },
 
+    unsubConfig: null, unsubOrders: null, unsubExpenses: null,
+
     initCloudSync(callback, configCallback, printCallback) {
         if (typeof db === 'undefined') {
             console.warn('Firebase db no detectado. Modo 100% offline.');
             return;
         }
 
+        if (this.unsubConfig) this.unsubConfig();
+        if (this.unsubOrders) this.unsubOrders();
+        if (this.unsubExpenses) this.unsubExpenses();
+
         // 1. Escuchar Configuración Global
-        getDbCollection(STORAGE_KEYS.SETTINGS).doc('global_config').onSnapshot(doc => {
+        this.unsubConfig = getDbCollection(STORAGE_KEYS.SETTINGS).doc('global_config').onSnapshot(doc => {
             if (doc.exists) {
                 const data = doc.data();
                 if (data.categories) localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(data.categories));
@@ -275,7 +281,7 @@ const StorageManager = {
         today.setDate(today.getDate() - 1);
         const dateStr = today.toISOString().split('T')[0];
 
-        getDbCollection(STORAGE_KEYS.ORDERS)
+        this.unsubOrders = getDbCollection(STORAGE_KEYS.ORDERS)
             .where('createdAt', '>=', dateStr)
             .onSnapshot(snapshot => {
                 let localOrders = this.getOrders();
@@ -305,7 +311,7 @@ const StorageManager = {
             });
 
         // 3. Escuchar Egresos
-        getDbCollection(STORAGE_KEYS.EXPENSES)
+        this.unsubExpenses = getDbCollection(STORAGE_KEYS.EXPENSES)
             .where('createdAt', '>=', dateStr)
             .onSnapshot(snapshot => {
                 let local = this.getExpenses();

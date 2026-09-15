@@ -3699,7 +3699,7 @@ function renderSplitUI() {
         }, 2500);
     }
 
-    // Initialize Cloud Sync
+    /* Initialize Cloud Sync moved to auth.js to guarantee correct tenant
     if (typeof StorageManager.initCloudSync === 'function') {
         StorageManager.initCloudSync(
             // Orders & Expenses callback
@@ -3724,7 +3724,7 @@ function renderSplitUI() {
             // Print callback (Remote print from other devices) - DISABLED
             null
         );
-    }
+    }*/
 
     // Initialize
     renderPosCategories();
