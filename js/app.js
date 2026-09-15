@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const page = item.dataset.page;
 
             // Protection for Admin, History, and Reports pages
-            const protectedPages = ['admin', 'history', 'reports', 'expenses'];
+            const protectedPages = ['admin', 'history', 'reports', 'expenses', 'balance'];
             if (protectedPages.includes(page) && !state.isAdminAuthenticated) {
                 if (elements.adminLoginModal) {
                     elements.adminLoginModal.classList.add('open');
@@ -301,6 +301,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderOrdersPage();
             } else if (page === 'history') {
                 renderHistoryPage();
+            } else if (page === 'balance') {
+                renderBalancePage();
             } else if (page === 'reports') {
                 // Initialize report date to today
                 if (elements.reportDatePicker && !elements.reportDatePicker.value) {
@@ -3821,3 +3823,106 @@ function renderSplitUI() {
 
 
 
+
+    // ============================================
+    // Balance
+    // ============================================
+    
+    function renderBalancePage() {
+        const periodSelect = document.getElementById('balancePeriodSelect');
+        const period = periodSelect ? periodSelect.value : 'today';
+        const tbody = document.getElementById('balanceTableBody');
+        if (!tbody) return;
+
+        let orders = [];
+        let expenses = [];
+
+        switch (period) {
+            case 'today':
+                orders = StorageManager.getTodayOrders();
+                expenses = StorageManager.getTodayExpenses();
+                break;
+            case 'month':
+                orders = StorageManager.getCurrentMonthOrders();
+                expenses = StorageManager.getCurrentMonthExpenses();
+                break;
+            case 'total':
+                orders = StorageManager.getOrders();
+                expenses = StorageManager.getExpenses();
+                break;
+            default:
+                orders = StorageManager.getTodayOrders();
+                expenses = StorageManager.getTodayExpenses();
+        }
+
+        orders = orders.filter(o => !o.isPartial && o.paid);
+
+        const dailyData = {};
+
+        // Aggregate Sales
+        orders.forEach(o => {
+            const dateObj = new Date(o.createdAt);
+            const dateStr = dateObj.toLocaleDateString('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            if (!dailyData[dateStr]) dailyData[dateStr] = { sales: 0, expenses: 0, timestamp: dateObj.getTime() };
+            dailyData[dateStr].sales += o.totalPrice || 0;
+        });
+
+        // Aggregate Expenses
+        expenses.forEach(e => {
+            const dateObj = new Date(e.date || e.createdAt);
+            const dateStr = dateObj.toLocaleDateString('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            if (!dailyData[dateStr]) dailyData[dateStr] = { sales: 0, expenses: 0, timestamp: dateObj.getTime() };
+            dailyData[dateStr].expenses += e.amount || 0;
+        });
+
+        const sortedDates = Object.keys(dailyData).sort((a, b) => dailyData[b].timestamp - dailyData[a].timestamp);
+
+        if (sortedDates.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 2rem; color: var(--text-muted);">No hay datos en este periodo</td></tr>';
+            return;
+        }
+
+        let html = '';
+        let totalSales = 0;
+        let totalExp = 0;
+
+        sortedDates.forEach(dateStr => {
+            const data = dailyData[dateStr];
+            const balance = data.sales - data.expenses;
+            const balanceColor = balance >= 0 ? '#16a34a' : '#dc2626';
+
+            totalSales += data.sales;
+            totalExp += data.expenses;
+
+            html += `
+                <tr style="border-top: 1px solid var(--border-subtle); background: var(--bg-secondary);">
+                    <td style="padding: 10px 12px; font-weight: 600; color: var(--text-primary);">${dateStr}</td>
+                    <td style="padding: 10px 12px; text-align: right; color: var(--text-primary);">${formatPrice(data.sales)}</td>
+                    <td style="padding: 10px 12px; text-align: right; color: var(--text-primary);">${formatPrice(data.expenses)}</td>
+                    <td style="padding: 10px 12px; text-align: right; font-weight: 800; color: ${balanceColor};">${formatPrice(balance)}</td>
+                </tr>
+            `;
+        });
+
+        const totalBalance = totalSales - totalExp;
+        const totalColor = totalBalance >= 0 ? '#16a34a' : '#dc2626';
+
+        html += `
+            <tr style="border-top: 2px solid var(--border-subtle); background: var(--bg-tertiary);">
+                <td style="padding: 10px 12px; font-weight: 800; color: var(--text-primary);">TOTALES</td>
+                <td style="padding: 10px 12px; text-align: right; font-weight: 800; color: var(--text-primary);">${formatPrice(totalSales)}</td>
+                <td style="padding: 10px 12px; text-align: right; font-weight: 800; color: var(--text-primary);">${formatPrice(totalExp)}</td>
+                <td style="padding: 10px 12px; text-align: right; font-weight: 800; color: ${totalColor};">${formatPrice(totalBalance)}</td>
+            </tr>
+        `;
+
+        tbody.innerHTML = html;
+    }
+
+    // Attach event listener when DOM is ready
+    const balSelect = document.getElementById('balancePeriodSelect');
+    if(balSelect) {
+        balSelect.addEventListener('change', renderBalancePage);
+    }
+
+});
