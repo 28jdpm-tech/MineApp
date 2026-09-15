@@ -1,4 +1,4 @@
-﻿// ============================================
+// ============================================
 // FoodX POS PRO - Multiple Client Rows System
 // ============================================
 
@@ -3899,7 +3899,12 @@ function renderSplitUI() {
                     <td style="padding: 10px 12px; font-weight: 600; color: var(--text-primary);">${dateStr}</td>
                     <td style="padding: 10px 12px; text-align: right; color: var(--text-primary);">${formatPrice(data.sales)}</td>
                     <td style="padding: 10px 12px; text-align: right; color: var(--text-primary);">${formatPrice(data.expenses)}</td>
-                    <td style="padding: 10px 12px; text-align: right; font-weight: 800; color: ${balanceColor};">${formatPrice(balance)}</td>
+                                        <td style="padding: 10px 12px; text-align: right; font-weight: 800; color: ${balanceColor};">${formatPrice(balance)}</td>
+                    <td style="padding: 10px 12px; text-align: center;">
+                        <button class="btn-cancel" onclick="window.openBalanceDetails('${dateStr}')" style="padding: 4px 8px; font-size: 0.75rem; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">
+                            <i data-lucide="eye" style="width: 12px; height: 12px;"></i> Ver
+                        </button>
+                    </td>
                 </tr>
             `;
         });
@@ -3912,7 +3917,8 @@ function renderSplitUI() {
                 <td style="padding: 10px 12px; font-weight: 800; color: var(--text-primary);">TOTALES</td>
                 <td style="padding: 10px 12px; text-align: right; font-weight: 800; color: var(--text-primary);">${formatPrice(totalSales)}</td>
                 <td style="padding: 10px 12px; text-align: right; font-weight: 800; color: var(--text-primary);">${formatPrice(totalExp)}</td>
-                <td style="padding: 10px 12px; text-align: right; font-weight: 800; color: ${totalColor};">${formatPrice(totalBalance)}</td>
+                                <td style="padding: 10px 12px; text-align: right; font-weight: 800; color: ${totalColor};">${formatPrice(totalBalance)}</td>
+                <td style="padding: 10px 12px;"></td>
             </tr>
         `;
 
@@ -3925,3 +3931,66 @@ function renderSplitUI() {
         balSelect.addEventListener('change', renderBalancePage);
     }
 
+
+    window.openBalanceDetails = function(dateStr) {
+        document.getElementById('balanceDetailTitle').textContent = 'Detalles - ' + dateStr;
+        const sList = document.getElementById('balanceDetailSalesList');
+        const eList = document.getElementById('balanceDetailExpensesList');
+        
+        let sHtml = '';
+        let eHtml = '';
+        let tSales = 0;
+        let tExp = 0;
+
+        const allOrders = StorageManager.getOrders().filter(o => o.paid && !o.isPartial);
+        const dayOrders = allOrders.filter(o => {
+            const d = new Date(o.createdAt);
+            return d.toLocaleDateString('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }) === dateStr;
+        });
+
+        if(dayOrders.length === 0) {
+            sHtml = '<div style="color: var(--text-muted); text-align: center; padding: 10px;">Sin ventas</div>';
+        } else {
+            dayOrders.forEach(o => {
+                tSales += o.totalPrice;
+                const time = new Date(o.createdAt).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+                sHtml += `
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 4px;">
+                        <span><span style="color: var(--text-muted); font-size: 0.75rem;">${time}</span> - Pedido #${o.orderNumber}</span>
+                        <span style="font-weight: 600;">${formatPrice(o.totalPrice)}</span>
+                    </div>
+                `;
+            });
+        }
+
+        const allExpenses = StorageManager.getExpenses();
+        const dayExpenses = allExpenses.filter(e => {
+            const d = new Date(e.date || e.createdAt);
+            return d.toLocaleDateString('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }) === dateStr;
+        });
+
+        if(dayExpenses.length === 0) {
+            eHtml = '<div style="color: var(--text-muted); text-align: center; padding: 10px;">Sin gastos</div>';
+        } else {
+            dayExpenses.forEach(e => {
+                tExp += e.amount;
+                eHtml += `
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 4px;">
+                        <span style="display: flex; flex-direction: column;">
+                            <span>${e.description}</span>
+                            <span style="color: var(--text-muted); font-size: 0.7rem;">${e.category}</span>
+                        </span>
+                        <span style="font-weight: 600; color: #dc2626;">${formatPrice(e.amount)}</span>
+                    </div>
+                `;
+            });
+        }
+
+        sList.innerHTML = sHtml;
+        eList.innerHTML = eHtml;
+        document.getElementById('balanceDetailSalesTotal').textContent = formatPrice(tSales);
+        document.getElementById('balanceDetailExpTotal').textContent = formatPrice(tExp);
+
+        document.getElementById('balanceDetailModal').classList.remove('hidden');
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    };
