@@ -1,4 +1,4 @@
-// ============================================
+﻿// ============================================
 // FoodX POS PRO - Multiple Client Rows System
 // ============================================
 
@@ -1208,7 +1208,7 @@ function renderSplitUI() {
             elements.printPaymentTicket.style.display = 'flex'; // Allow re-print
             if (elements.deleteOrderBtn) elements.deleteOrderBtn.style.display = 'flex';
         } else if (!order.checkoutPrinted) {
-            modalTitle.textContent = 'Imprimir Ticket de Cobro';
+            modalTitle.textContent = 'Pedido Pendiente';
             elements.confirmPayment.style.display = 'none';
             elements.printPaymentTicket.style.display = 'flex';
             if (elements.deleteOrderBtn) elements.deleteOrderBtn.style.display = 'flex';
