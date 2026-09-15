@@ -1,4 +1,4 @@
-﻿// ============================================
+// ============================================
 // FoodX POS - Storage Manager
 // ============================================
 
@@ -375,7 +375,12 @@ const StorageManager = {
     getExpenseCategories() {
         const data = localStorage.getItem(STORAGE_KEYS.EXPENSE_CATEGORIES);
         if (data) return JSON.parse(data);
-                return [];
+                return [
+            { id: 'materia_prima', label: 'Materia Prima', emoji: '📦' },
+            { id: 'servicios', label: 'Servicios', emoji: '💡' },
+            { id: 'arrendamiento', label: 'Arrendamiento', emoji: '🏠' },
+            { id: 'nomina', label: 'Nómina', emoji: '👥' }
+        ];
     },
 
     saveExpenseCategories(categories) {
