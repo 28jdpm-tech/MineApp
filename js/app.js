@@ -1,4 +1,4 @@
-// ============================================
+﻿// ============================================
 // FoodX POS PRO - Multiple Client Rows System
 // ============================================
 
@@ -1013,7 +1013,7 @@ function renderSplitUI() {
         Object.keys(lists).forEach(mode => {
             if (lists[mode]) {
                 if (mode === checkoutMode) {
-                    lists[mode].classList.remove('hidden');
+                    lists[mode].classList.add('open');
                 } else {
                     lists[mode].classList.add('hidden');
                 }
@@ -1252,7 +1252,7 @@ function renderSplitUI() {
         }
 
         if (typeof lucide !== 'undefined') lucide.createIcons();
-        elements.paymentModal.classList.remove('hidden');
+        elements.paymentModal.classList.add('open');
     }
 
 
@@ -2076,14 +2076,14 @@ function renderSplitUI() {
             const val = e.target.value;
             // Handle date picker visibility
             if (val === 'date') {
-                elements.reportDatePickerGroup?.classList.remove('hidden');
+                elements.reportDatePickerGroup?.classList.add('open');
             } else {
                 elements.reportDatePickerGroup?.classList.add('hidden');
             }
 
             // Handle month picker visibility
             if (val === 'specific-month') {
-                elements.reportMonthPickerGroup?.classList.remove('hidden');
+                elements.reportMonthPickerGroup?.classList.add('open');
             } else {
                 elements.reportMonthPickerGroup?.classList.add('hidden');
             }
@@ -2130,11 +2130,11 @@ function renderSplitUI() {
             elements.historyOrderModal.classList.add('hidden');
             elements.historyOrderModal.style.display = 'none';
         }
-        elements.historyOrdersList.classList.remove('hidden');
+        elements.historyOrdersList.classList.add('open');
 
         // Show/Hide date picker container
         if (historyMode === 'date') {
-            elements.datePickerContainer.classList.remove('hidden');
+            elements.datePickerContainer.classList.add('open');
         } else {
             elements.datePickerContainer.classList.add('hidden');
         }
@@ -2205,7 +2205,7 @@ function renderSplitUI() {
         selectedHistoryOrder = order;
         elements.historyTicketContent.innerHTML = generateTicketText(order);
 
-        elements.historyOrderModal.classList.remove('hidden');
+        elements.historyOrderModal.classList.add('open');
         elements.historyOrderModal.style.display = 'flex';
     }
 
@@ -2933,7 +2933,7 @@ function renderSplitUI() {
             const val = e.target.value;
             const picker = document.getElementById('expenseMonthPicker');
             if (val === 'specific-month') {
-                picker?.classList.remove('hidden');
+                picker?.classList.add('open');
             } else {
                 picker?.classList.add('hidden');
                 renderExpensesPage();
@@ -3991,6 +3991,6 @@ function renderSplitUI() {
         document.getElementById('balanceDetailSalesTotal').textContent = formatPrice(tSales);
         document.getElementById('balanceDetailExpTotal').textContent = formatPrice(tExp);
 
-        document.getElementById('balanceDetailModal').classList.remove('hidden');
+        document.getElementById('balanceDetailModal').classList.add('open');
         if (typeof lucide !== 'undefined') lucide.createIcons();
     };

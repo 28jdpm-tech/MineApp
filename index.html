@@ -620,7 +620,8 @@
                                     <th style="padding: 10px 12px; text-align: left; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.7rem;">Fecha</th>
                                     <th style="padding: 10px 12px; text-align: right; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.7rem;">Ventas</th>
                                     <th style="padding: 10px 12px; text-align: right; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.7rem;">Gastos</th>
-                                    <th style="padding: 10px 12px; text-align: right; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.7rem;">Balance</th>`n<th style="padding: 10px 12px; text-align: center; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.7rem;">Detalle</th>
+                                    <th style="padding: 10px 12px; text-align: right; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.7rem;">Balance</th>
+<th style="padding: 10px 12px; text-align: center; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.7rem;">Detalle</th>
                                 </tr>
                             </thead>
                             <tbody id="balanceTableBody">
@@ -1032,11 +1033,11 @@ function forceCloseLogin() {
 }
 </script>        <!-- Balance Detail Modal -->
         <div class="modal hidden" id="balanceDetailModal" style="z-index: 10005;">
-            <div class="modal-overlay" onclick="document.getElementById('balanceDetailModal').classList.add('hidden')"></div>
+            <div class="modal-overlay" onclick="document.getElementById('balanceDetailModal').classList.remove('open')"></div>
             <div class="modal-content" style="max-width: 700px; width: 95%;">
                 <div class="modal-header">
                     <h3 id="balanceDetailTitle">Detalles del Día</h3>
-                    <button class="modal-close" onclick="document.getElementById('balanceDetailModal').classList.add('hidden')">
+                    <button class="modal-close" onclick="document.getElementById('balanceDetailModal').classList.remove('open')">
                         <i data-lucide="x"></i>
                     </button>
                 </div>
